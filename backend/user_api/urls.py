@@ -10,7 +10,7 @@ router = routers.DefaultRouter()
 router.register(r'sitebooking', views.SiteBookingView, 'sitebooking')
 
 urlpatterns = [
-    path('sitebooking/', include(router.urls))
+    path('', include(router.urls))
 
  
  
