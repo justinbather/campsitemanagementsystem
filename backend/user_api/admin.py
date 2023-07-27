@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 
-from .models import User
+from .models import *
 
 # Register your models here.
 class CustomUserAdmin(UserAdmin):
@@ -32,3 +32,13 @@ class CustomUserAdmin(UserAdmin):
     
     search_fields = ('email','first_name', 'last_name')
     ordering = ('email', 'first_name', 'last_name')
+
+@admin.register(SiteBooking)
+class SiteBookingAdmin(admin.ModelAdmin):
+    list_display = ("park", "site", "start_date", "end_date", "total_cost")
+
+    
+
+admin.site.register(Site)
+admin.site.register(Park)
+

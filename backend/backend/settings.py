@@ -133,3 +133,5 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 AUTH_USER_MODEL = 'user_api.User'
+
+REST_FRAMEWORK = {'DEFAULT_PERMISSIONS_CLASSES':['rest_framework.permission.AllowAny']}
