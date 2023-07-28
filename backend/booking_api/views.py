@@ -15,3 +15,7 @@ class SiteBookingView(viewsets.ModelViewSet):
     queryset = SiteBooking.objects.all()
 
 
+def test(request):
+    return render(request, 'index.html')
+
+
