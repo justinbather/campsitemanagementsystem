@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user_api',
+    'booking_api',
     'corsheaders',
     'rest_framework',
 ]
@@ -132,6 +132,6 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
 )
 
-AUTH_USER_MODEL = 'user_api.User'
+AUTH_USER_MODEL = 'booking_api.User'
 
 REST_FRAMEWORK = {'DEFAULT_PERMISSION_CLASSES':['rest_framework.permissions.AllowAny']}
