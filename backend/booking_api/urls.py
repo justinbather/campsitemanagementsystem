@@ -6,11 +6,20 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 
-#router.register(r'tasks',views.TodoView, 'task')
-router.register(r'sitebooking', views.SiteBookingView, 'sitebooking')
+
+#router.register(r'sitebooking', views.SiteBookingView, 'sitebooking')
+#router.register(r'park', views.ParkView, 'park')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('park/', views.ParkView.as_view(), name='park'),
+    path('park/<int:park_id>', views.ParkView.as_view()),
+    path('site', views.SiteView.as_view()),
+    path('site/<int:site_id>', views.SiteView.as_view()),
+    path('bookings/<int:park_id>', views.SiteBookingView.as_view()),
+    #path('bookings/<int:park_id>/<int:site_id>', views.SiteBookingView.as_view()),
+
+    #path('park/<int:park_id>', views.ParkView.as_view(), name='park'),
     path('test', views.test, name='test'),
 
  
