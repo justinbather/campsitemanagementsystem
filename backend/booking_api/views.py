@@ -13,14 +13,48 @@ from .models import *
 
 
 class SiteBookingView(APIView):
+    """
+    API endpoint for booking and retrieving campsite reservations.
+
+    GET /bookings/<int:park_id>/
+    - Returns a list of all bookings for the given park_id.
+
+    POST /bookings/<int:park_id>/
+    - Allows users to create a new campsite booking for the specified park_id.
+    - The request should include a JSON payload with the following fields:
+        - site_id: The unique identifier of the campsite to book.
+        - start_date: The start date of the booking (format: YYYY-MM-DD).
+        - end_date: The end date of the booking (format: YYYY-MM-DD).
+    - The API will check if the specified campsite is available for the given date range.
+    - If the campsite is available, it will create the booking and return the serialized booking data.
+    - If the campsite is already booked for any overlapping dates, it will return an error message.
+    """
+
     def get(self, request, park_id, *args, **kwargs):
+        """
+        GET request handler to retrieve all bookings for a specific park.
+
+        Parameters:
+        - park_id (int): The unique identifier of the park for which bookings are requested.
+
+        Returns:
+        - Response: A JSON response containing a list of serialized booking data for the specified park_id.
+        """
         bookings = SiteBooking.objects.filter(park_id=park_id)
         serializer = SiteBookingSerializer(bookings, many=True)
         return Response(serializer.data)
     
     def post(self, request, park_id, *args, **kwargs):
-        # if json is valid, we check if there is a current booking for the selected site, if we get a model.DoesNotExist we know there is no booking
-        # and we save the serialized data
+        """
+        POST request handler to create a new campsite booking for a specific park.
+
+        Parameters:
+        - park_id (int): The unique identifier of the park for which the booking is being created.
+        - request (Request): The HTTP request object containing the JSON payload with booking information.
+
+        Returns:
+        - Response: A JSON response containing either the serialized booking data if successful, or an error message if the campsite is already booked for the given date range.
+        """
         serializer = SiteBookingSerializer(data=request.data)
         
         if serializer.is_valid(): 
