@@ -41,9 +41,26 @@ class SiteBookingView(APIView):
         - Response: A JSON response containing a list of serialized booking data for the specified park_id.
         """
         bookings = SiteBooking.objects.filter(park_id=park_id)
+        
         serializer = SiteBookingSerializer(bookings, many=True)
+        
+        
+        list_of_dicts = []
+        '''
+        for data_dict in serializer.data: #Appends only id, start and end date to list for response
+            obj_key = data_dict['id']
+            start_date_value = data_dict["start_date"]
+            end_date_value = data_dict['end_date']
+            dict = {'id': obj_key, 'start_date': start_date_value, 
+                'end_date': end_date_value}
+            list_of_dicts.append(dict)
+            print(start_date_value)
+
+        return Response(list_of_dicts)
+        '''
         return Response(serializer.data)
     
+
     def post(self, request, park_id, *args, **kwargs):
         """
         POST request handler to create a new campsite booking for a specific park.
