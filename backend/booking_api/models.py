@@ -36,7 +36,7 @@ class Park(models.Model):
     
 class Site(models.Model):
     name = models.CharField(max_length=10)
-    park_name = models.ForeignKey(Park, on_delete=models.CASCADE)
+    park_id = models.ForeignKey(Park, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
@@ -44,7 +44,7 @@ class Site(models.Model):
 
 class SiteBooking(models.Model):
     park = models.ForeignKey(Park, on_delete=models.CASCADE)
-    site = models.ForeignKey(Site, on_delete=models.CASCADE)
+    site_id = models.ForeignKey(Site, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
     payment_made = models.BooleanField()

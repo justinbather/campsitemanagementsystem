@@ -35,7 +35,7 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(SiteBooking)
 class SiteBookingAdmin(admin.ModelAdmin):
-    list_display = ("park", "site", "start_date", "end_date", "total_cost")
+    list_display = ("park", "site_id", "start_date", "end_date", "total_cost")
 
     
 
