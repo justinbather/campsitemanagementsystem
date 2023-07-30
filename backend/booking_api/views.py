@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status
 
-from .serializers import ParkSerializer, SiteBookingSerializer, SiteSerializer
+from .serializers import ParkSerializer, SiteBookingSerializer, SiteSerializer, CreateSiteBookingSerializer
 
 from .models import *
 
@@ -41,9 +41,26 @@ class SiteBookingView(APIView):
         - Response: A JSON response containing a list of serialized booking data for the specified park_id.
         """
         bookings = SiteBooking.objects.filter(park_id=park_id)
+        
         serializer = SiteBookingSerializer(bookings, many=True)
+        
+        
+        list_of_dicts = []
+        '''
+        for data_dict in serializer.data: #Appends only id, start and end date to list for response
+            obj_key = data_dict['id']
+            start_date_value = data_dict["start_date"]
+            end_date_value = data_dict['end_date']
+            dict = {'id': obj_key, 'start_date': start_date_value, 
+                'end_date': end_date_value}
+            list_of_dicts.append(dict)
+            print(start_date_value)
+
+        return Response(list_of_dicts)
+        '''
         return Response(serializer.data)
     
+
     def post(self, request, park_id, *args, **kwargs):
         """
         POST request handler to create a new campsite booking for a specific park.
@@ -55,16 +72,19 @@ class SiteBookingView(APIView):
         Returns:
         - Response: A JSON response containing either the serialized booking data if successful, or an error message if the campsite is already booked for the given date range.
         """
-        serializer = SiteBookingSerializer(data=request.data)
+        serializer = CreateSiteBookingSerializer(data=request.data)
         
         if serializer.is_valid(): 
             try:
-                current_bookings = SiteBooking.objects.get(park=park_id, site_id=serializer.validated_data['site_id'], start_date=serializer.validated_data['start_date'], end_date=serializer.validated_data['end_date'])
+                current_bookings = SiteBooking.objects.get(site_id=serializer.validated_data['site_id'], start_date=serializer.validated_data['start_date'], end_date=serializer.validated_data['end_date'])
             except SiteBooking.MultipleObjectsReturned:
                 return Response({'status':'That site is booked. Please try different dates'}, status=status.HTTP_400_BAD_REQUEST)
             except SiteBooking.DoesNotExist:
-                serializer.save()
-                return Response(serializer.data)
+                booking = SiteBooking.objects.create(park_id=park_id, site_id=serializer.validated_data['site_id'], 
+                                                     start_date=serializer.validated_data['start_date'], 
+                                                     end_date=serializer.validated_data['end_date'], payment_made = serializer.validated_data['payment_made'])
+                
+                return Response(SiteBookingSerializer(booking).data)
             
                 
             return Response({'status':'That site is booked. Please try different dates'}, status=status.HTTP_400_BAD_REQUEST)
