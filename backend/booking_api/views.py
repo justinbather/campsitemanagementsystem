@@ -73,6 +73,7 @@ class SiteBookingView(APIView):
         - Response: A JSON response containing either the serialized booking data if successful, or an error message if the campsite is already booked for the given date range.
         """
         serializer = CreateSiteBookingSerializer(data=request.data)
+        print(request.data)
         
         if serializer.is_valid(): 
             try:
