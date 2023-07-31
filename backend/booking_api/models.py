@@ -50,9 +50,9 @@ class SiteBooking(models.Model):
     payment_made = models.BooleanField()
     
     def total_cost(self):
-        return (self.site.price * (self.end_date - self.start_date).days)
+        return (self.site_id.price * (self.end_date - self.start_date).days)
 
 
     def __str__(self):
-        return self.site.name
+        return self.site_id.name
 
