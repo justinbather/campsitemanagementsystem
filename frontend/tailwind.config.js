@@ -8,6 +8,9 @@ module.exports = {
       "blue-primary": "#3995F4",
       "form-color": "#EEF5FB",
     },
+    scale: {
+      40: ".80",
+    },
     extend: {},
   },
   plugins: [],
