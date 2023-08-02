@@ -1,9 +1,9 @@
-import { Homepage } from "./components";
+import { Homepage, CampSelect } from "./components";
 
 function App() {
   return (
     <div className="App">
-      <Homepage />
+      <CampSelect />
     </div>
   );
 }
