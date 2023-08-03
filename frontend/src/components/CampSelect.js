@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import dayjs from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Dropdown from "react-dropdown";
@@ -45,14 +46,17 @@ const CampSelect = () => {
                   <h3 className="font-bold text-sm pl-3 pb-1">Arrival*</h3>
                   <DatePicker
                     label=""
+                    format="YYYY/MM/DD"
                     value={arrivalDate}
+                    defaultValue={arrivalDate}
                     slotProps={{
                       textField: {
-                        helperText: "MM/DD/YYYY",
+                        helperText: "YYYY/MM/DD",
                       },
                     }}
-                    onChange={(newArrivalDate) => {
-                      setArrivalDate(newArrivalDate);
+                    onChange={(arrivalDate) => {
+                      setArrivalDate(arrivalDate);
+                      console.log(dayjs(arrivalDate.$d).format("YYYY-MM-DD"));
                     }}
                   />
                 </div>
@@ -60,9 +64,11 @@ const CampSelect = () => {
                   <h3 className="font-bold text-sm pl-3 pb-1">Departure*</h3>
                   <DatePicker
                     label=""
+                    format="YYYY/MM/DD"
                     value={departureDate}
-                    onChange={(newDepartureDate) => {
-                      setDepartureDate(newDepartureDate);
+                    onChange={(departureDate) => {
+                      setDepartureDate(departureDate);
+                      console.log(dayjs(departureDate.$d).format("YYYY-MM-DD"));
                     }}
                   />
                 </div>
