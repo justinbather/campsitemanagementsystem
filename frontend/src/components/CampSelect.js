@@ -9,20 +9,20 @@ import tent_icon from "../assets/tent.png";
 import reset_icon from "../assets/reset_icon.svg";
 import adjust_icon from "../assets/adjust_icon.svg";
 
+const siteTypeOptions = ["Back in", "Pull Through"];
+const trailerTypeOptions = [
+  "Motorhome",
+  "Tent",
+  "Pop-Up",
+  "5th-Wheel",
+  "Travel Trailer",
+];
+const amenities = ["Sewer", "Water", "30-Amp", "50-Amp", "Wi-Fi", "Pets"];
+
 const CampSelect = () => {
   const [campsiteName, setCampsiteName] = useState("Campsite Name");
-  const [arrivalDate, setArrivalDate] = useState("");
-  const [departureDate, setDepartureDate] = useState("");
-
-  const siteTypeOptions = ["Back in", "Pull Through"];
-  const trailerTypeOptions = [
-    "Motorhome",
-    "Tent",
-    "Pop-Up",
-    "5th-Wheel",
-    "Travel Trailer",
-  ];
-  const amenities = ["Sewer", "Water", "30-Amp", "50-Amp", "Wi-Fi", "Pets"];
+  const [arrivalDate, setArrivalDate] = useState(dayjs());
+  const [departureDate, setDepartureDate] = useState(dayjs());
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -45,8 +45,6 @@ const CampSelect = () => {
                 <div className="w-1/2">
                   <h3 className="font-bold text-sm pl-3 pb-1">Arrival*</h3>
                   <DatePicker
-                    label=""
-                    format="YYYY/MM/DD"
                     value={arrivalDate}
                     defaultValue={arrivalDate}
                     slotProps={{
@@ -63,8 +61,6 @@ const CampSelect = () => {
                 <div className="w-1/2">
                   <h3 className="font-bold text-sm pl-3 pb-1">Departure*</h3>
                   <DatePicker
-                    label=""
-                    format="YYYY/MM/DD"
                     value={departureDate}
                     onChange={(departureDate) => {
                       setDepartureDate(departureDate);
