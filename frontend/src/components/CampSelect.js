@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -12,7 +12,10 @@ import adjust_icon from "../assets/adjust_icon.svg";
 import plus_icon from "../assets/plus_icon.svg";
 import minus_icon from "../assets/minus_icon.svg";
 
-const siteTypeOptions = ["Back in", "Pull Through"];
+const siteTypeOptions = [
+  { label: "Back in", value: "backin" },
+  { label: "Pull Through", value: "pullthrough" },
+];
 const trailerTypeOptions = [
   "Motorhome",
   "Tent",
@@ -20,14 +23,43 @@ const trailerTypeOptions = [
   "5th-Wheel",
   "Travel Trailer",
 ];
-const amenities = ["Sewer", "Water", "30-Amp", "50-Amp", "Wi-Fi", "Pets"];
+const amenity = ["Sewer", "Water", "30-Amp", "50-Amp", "Wi-Fi", "Pets"];
 
 const CampSelect = () => {
+  const initialCheckedAmenities = amenity.reduce((acc, amenity) => {
+    acc[amenity] = false;
+    return acc;
+  }, {});
+
+  const [checkedAmenities, setCheckedAmenities] = useState(
+    initialCheckedAmenities
+  );
   const [campsiteName, setCampsiteName] = useState("Campsite Name");
   const [arrivalDate, setArrivalDate] = useState(dayjs());
   const [departureDate, setDepartureDate] = useState(dayjs());
   const [numberOfPersons, setNumberOfPersons] = useState(0);
   const [numberOfPets, setNumberOfPets] = useState(0);
+  const [siteType, setSiteType] = useState(null);
+
+  useEffect(() => {
+    console.log(checkedAmenities);
+    console.log(numberOfPersons);
+    console.log(numberOfPets);
+    console.log(dayjs(arrivalDate.$d).format("YYYY-MM-DD"));
+    console.log(dayjs(departureDate.$d).format("YYYY-MM-DD"));
+    console.log(siteType);
+  }, [
+    checkedAmenities,
+    numberOfPersons,
+    numberOfPets,
+    arrivalDate,
+    departureDate,
+    siteType,
+  ]);
+
+  const handleDropdownChange = (selectedOption) => {
+    setSiteType(selectedOption.value); // Update the state with the selected value
+  };
 
   const increment = (setState) => {
     setState((prevCount) => prevCount + 1);
@@ -37,6 +69,13 @@ const CampSelect = () => {
     if (state > 0) {
       setState((prevCount) => prevCount - 1);
     }
+  };
+
+  const handleCheckboxToggle = (amenity) => {
+    setCheckedAmenities((prevCheckedAmenities) => ({
+      ...prevCheckedAmenities,
+      [amenity]: !prevCheckedAmenities[amenity],
+    }));
   };
 
   return (
@@ -69,7 +108,6 @@ const CampSelect = () => {
                     }}
                     onChange={(arrivalDate) => {
                       setArrivalDate(arrivalDate);
-                      console.log(dayjs(arrivalDate.$d).format("YYYY-MM-DD"));
                     }}
                   />
                 </div>
@@ -79,7 +117,6 @@ const CampSelect = () => {
                     value={departureDate}
                     onChange={(departureDate) => {
                       setDepartureDate(departureDate);
-                      console.log(dayjs(departureDate.$d).format("YYYY-MM-DD"));
                     }}
                   />
                 </div>
@@ -98,21 +135,29 @@ const CampSelect = () => {
                 </section>
                 <div className="pt-3 px-5">
                   <h3 className="font-bold text-sm pl-3 pb-1">Site Type</h3>
-                  <Dropdown options={siteTypeOptions} className="" />
+                  <Dropdown
+                    options={siteTypeOptions}
+                    onChange={handleDropdownChange}
+                  />
                 </div>
                 <div className="pt-3 px-5">
                   <h3 className="font-bold text-sm pl-3 pb-1">Trailer Type</h3>
-                  <Dropdown options={trailerTypeOptions} className="" />
+                  <Dropdown options={trailerTypeOptions} />
                 </div>
                 <div className="h-1/2 flex w-full items-center">
                   <div className="w-3/5 flex flex-col">
                     <h3 className="font-bold text-sm pl-3 pb-1">Amenities</h3>
                     <ul className="columns-2 flex-col bg-form-color gap-0 rounded-2xl items-center">
-                      {amenities.map(function (amenities, i) {
+                      {amenity.map(function (amenity, i) {
                         return (
                           <li className="py-3 pl-3 text-sm flex" key={i}>
-                            <input type="checkbox" className="mx-1 " />
-                            {amenities}
+                            <input
+                              type="checkbox"
+                              className="mx-1"
+                              checked={checkedAmenities[amenity]}
+                              onChange={() => handleCheckboxToggle(amenity)}
+                            />
+                            {amenity}
                           </li>
                         );
                       })}
