@@ -4,10 +4,13 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
+
 import link_icon from "../assets/link_icon.svg";
 import tent_icon from "../assets/tent.png";
 import reset_icon from "../assets/reset_icon.svg";
 import adjust_icon from "../assets/adjust_icon.svg";
+import plus_icon from "../assets/plus_icon.svg";
+import minus_icon from "../assets/minus_icon.svg";
 
 const siteTypeOptions = ["Back in", "Pull Through"];
 const trailerTypeOptions = [
@@ -23,6 +26,18 @@ const CampSelect = () => {
   const [campsiteName, setCampsiteName] = useState("Campsite Name");
   const [arrivalDate, setArrivalDate] = useState(dayjs());
   const [departureDate, setDepartureDate] = useState(dayjs());
+  const [numberOfPersons, setNumberOfPersons] = useState(0);
+  const [numberOfPets, setNumberOfPets] = useState(0);
+
+  const increment = (setState) => {
+    setState((prevCount) => prevCount + 1);
+  };
+
+  const decrement = (state, setState) => {
+    if (state > 0) {
+      setState((prevCount) => prevCount - 1);
+    }
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -89,7 +104,7 @@ const CampSelect = () => {
                   <h3 className="font-bold text-sm pl-3 pb-1">Trailer Type</h3>
                   <Dropdown options={trailerTypeOptions} className="" />
                 </div>
-                <div className="h-1/2 flex w-full items-center px-5">
+                <div className="h-1/2 flex w-full items-center">
                   <div className="w-3/5 flex flex-col">
                     <h3 className="font-bold text-sm pl-3 pb-1">Amenities</h3>
                     <ul className="columns-2 flex-col bg-form-color gap-0 rounded-2xl items-center">
@@ -102,6 +117,38 @@ const CampSelect = () => {
                         );
                       })}
                     </ul>
+                  </div>
+                  <div className="borde w-1/2 h-full flex flex-col pl-5 justify-center">
+                    <h3 className="font-bold text-sm pl-3 pb-1">Persons</h3>
+                    <form className="w-full h-1/4 bg-form-color rounded-lg flex justify-between items-center">
+                      <img
+                        src={minus_icon}
+                        className="w-10 items-center px-3 cursor-pointer border-r h-full border-stroke-color"
+                        onClick={() =>
+                          decrement(numberOfPersons, setNumberOfPersons)
+                        }
+                      />
+                      {numberOfPersons}
+                      <img
+                        src={plus_icon}
+                        className="w-10 items-center px-3 cursor-pointer border-l h-full border-stroke-color"
+                        onClick={() => increment(setNumberOfPersons)}
+                      />
+                    </form>
+                    <h3 className="font-bold text-sm pl-3 pt-1 mt-1">Pets</h3>
+                    <form className="w-full h-1/4 bg-form-color rounded-lg flex justify-between items-center">
+                      <img
+                        src={minus_icon}
+                        className="w-10 items-center px-3 cursor-pointer border-r h-full border-stroke-color"
+                        onClick={() => decrement(numberOfPets, setNumberOfPets)}
+                      />
+                      {numberOfPets}
+                      <img
+                        src={plus_icon}
+                        className="w-10 items-center px-3 cursor-pointer border-l h-full border-stroke-color"
+                        onClick={() => increment(setNumberOfPets)}
+                      />
+                    </form>
                   </div>
                 </div>
               </div>
