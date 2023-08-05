@@ -35,9 +35,23 @@ class Park(models.Model):
         return self.name
     
 class Site(models.Model):
+    PULL_THROUGH = "Pull Through"
+    BACK_IN = "Back In"
+
+    SITE_TYPES = [
+        (PULL_THROUGH, _("Pull Through")),
+        (BACK_IN, _("Back In")),
+    ]
+
+
     name = models.CharField(max_length=10)
     park_id = models.ForeignKey(Park, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=6, decimal_places=2)
+    site_type = models.CharField(choices=SITE_TYPES, max_length=30)
+    electicity = models.BooleanField(default=False)
+    water = models.BooleanField(default=False)
+    sewage = models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.name

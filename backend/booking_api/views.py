@@ -30,34 +30,28 @@ class SiteBookingView(APIView):
     - If the campsite is already booked for any overlapping dates, it will return an error message.
     """
 
-    def get(self, request, park_id, *args, **kwargs):
+    def get(self, request, park_id, arrival, departure, *args, **kwargs):
+        
         """
-        GET request handler to retrieve all bookings for a specific park.
+        Get a list of available campsites.
 
         Parameters:
-        - park_id (int): The unique identifier of the park for which bookings are requested.
+        - park_id (integer): The unique identifier of the park where campsites are located.
+        - arrival (string, format: YYYY-MM-DD): The date of arrival for the booking.
+        - departure (string, format: YYYY-MM-DD): The date of departure for the booking.
 
         Returns:
-        - Response: A JSON response containing a list of serialized booking data for the specified park_id.
+        - 200 OK: List of available campsites with their details.
+        - 400 Bad Request: If the date format is invalid.
         """
-        bookings = SiteBooking.objects.filter(park_id=park_id)
-        
-        serializer = SiteBookingSerializer(bookings, many=True)
-        
-        
-        list_of_dicts = []
-        '''
-        for data_dict in serializer.data: #Appends only id, start and end date to list for response
-            obj_key = data_dict['id']
-            start_date_value = data_dict["start_date"]
-            end_date_value = data_dict['end_date']
-            dict = {'id': obj_key, 'start_date': start_date_value, 
-                'end_date': end_date_value}
-            list_of_dicts.append(dict)
-            print(start_date_value)
 
-        return Response(list_of_dicts)
-        '''
+
+        available_sites = Site.objects.filter(park_id=park_id).exclude(sitebooking__start_date__lte=arrival, sitebooking__end_date__gte=arrival)\
+            .exclude(sitebooking__start_date__lte=departure, sitebooking__end_date__gte=departure)
+    
+
+        serializer = SiteSerializer(available_sites, many=True)
+
         return Response(serializer.data)
     
 

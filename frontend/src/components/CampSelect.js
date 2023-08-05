@@ -4,6 +4,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
+import axios from "axios";
 
 import link_icon from "../assets/link_icon.svg";
 import tent_icon from "../assets/tent.png";
@@ -40,6 +41,27 @@ const CampSelect = () => {
   const [numberOfPersons, setNumberOfPersons] = useState(0);
   const [numberOfPets, setNumberOfPets] = useState(0);
   const [siteType, setSiteType] = useState(null);
+  const [availableSites, setAvailableSites] = useState([]);
+
+  //Fetch from api when filter dates changes
+  //Parses arrivalDate and departureDate to yyyy/mm/dd format
+  // fetches api at /bookings/<int:park_id>/<str:arrivalDate>/<str:departureDate>
+  //Api returns available sites in JSON for the given dates
+
+  const fetchAvailableSites = async (arrivalDate, departureDate) => {
+    try {
+      const parsedArrivalDate = dayjs(arrivalDate.$d).format("YYYY-MM-DD")
+      const parsedDepartureDate = dayjs(departureDate.$d).format("YYYY-MM-DD")
+      const availableSiteData = await axios.get(`/bookings/2/${parsedArrivalDate}/${parsedDepartureDate}`);
+      const availableSites = Object.entries(availableSiteData);
+      setAvailableSites(availableSites[0][1]);
+      console.log(availableSites)
+      console.log(availableSites[0][1])
+    }
+    catch (err) {
+      console.log(err)
+    }
+  };
 
   useEffect(() => {
     console.log(checkedAmenities);
@@ -47,7 +69,8 @@ const CampSelect = () => {
     console.log(numberOfPets);
     console.log(dayjs(arrivalDate.$d).format("YYYY-MM-DD"));
     console.log(dayjs(departureDate.$d).format("YYYY-MM-DD"));
-    console.log(siteType);
+    console.log(siteType); 
+    fetchAvailableSites(arrivalDate, departureDate);
   }, [
     checkedAmenities,
     numberOfPersons,
@@ -199,7 +222,16 @@ const CampSelect = () => {
               </div>
             </div>
             <div className="flex flex-col w-1/2 mr-10 rounded-r-[40px] gap-3">
-              <div className="border-2 border-stroke-color h-1/2 mt-5 rounded-tr-[40px]"></div>
+              <div className="border-2 border-stroke-color h-1/2 mt-5 rounded-tr-[40px]">
+                <h1 className="text-2xl">test</h1>
+                <div>
+
+                  { availableSites.map((site) => (
+                    <h1 key={site.id}>{site.name} - $ {site.price}</h1>
+                  ))}
+                    
+                </div>
+              </div>
               <div className="border-2 border-stroke-color h-1/2 mb-20 rounded-br-[40px]"></div>
             </div>
           </div>
