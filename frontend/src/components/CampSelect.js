@@ -80,6 +80,31 @@ const CampSelect = () => {
     siteType,
   ]);
 
+  const handleBooking = async (siteId, arrivalDate, departureDate) => {
+    // onClick function called when user clicks "book now" next to listed sites
+    try {
+      const parsedArrivalDate = dayjs(arrivalDate.$d).format("YYYY-MM-DD")
+      const parsedDepartureDate = dayjs(departureDate.$d).format("YYYY-MM-DD")
+      const booking = await axios.post(
+        "/bookings/2",
+        {
+          site_id: siteId,
+          start_date: parsedArrivalDate,
+          end_date: parsedDepartureDate,
+          payment_made: false //Change this before production to variable based on payment taken from user
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      alert('Booking Success')
+    } catch(err){
+      console.log(err)
+    }
+  };
+
   const handleDropdownChange = (selectedOption) => {
     setSiteType(selectedOption.value); // Update the state with the selected value
   };
@@ -227,7 +252,10 @@ const CampSelect = () => {
                 <div>
 
                   { availableSites.map((site) => (
-                    <h1 key={site.id}>{site.name} - $ {site.price}</h1>
+                    <>
+                    <h1 key={site.id}>{site.name} - $ {site.price}/night</h1>
+                    <p onClick={() => handleBooking(site.id, arrivalDate, departureDate)}>Book now</p>
+                    </>
                   ))}
                     
                 </div>

@@ -69,10 +69,12 @@ class SiteBookingView(APIView):
         serializer = CreateSiteBookingSerializer(data=request.data)
         print(request.data)
         
-        if serializer.is_valid(): 
+        if serializer.is_valid():
+            print("valid data") 
             try:
                 current_bookings = SiteBooking.objects.get(site_id=serializer.validated_data['site_id'], start_date=serializer.validated_data['start_date'], end_date=serializer.validated_data['end_date'])
             except SiteBooking.MultipleObjectsReturned:
+                print("Site booking already exists")
                 return Response({'status':'That site is booked. Please try different dates'}, status=status.HTTP_400_BAD_REQUEST)
             except SiteBooking.DoesNotExist:
                 booking = SiteBooking.objects.create(park_id=park_id, site_id=serializer.validated_data['site_id'], 
@@ -83,6 +85,7 @@ class SiteBookingView(APIView):
             
                 
             return Response({'status':'That site is booked. Please try different dates'}, status=status.HTTP_400_BAD_REQUEST)
+        print("invalid data")
         return Response({'status':'Incorrect booking info'}, status=status.HTTP_400_BAD_REQUEST)
 
 
