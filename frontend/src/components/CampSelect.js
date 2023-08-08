@@ -24,7 +24,7 @@ const trailerTypeOptions = [
   "5th-Wheel",
   "Travel Trailer",
 ];
-const amenity = ["Sewer", "Water", "30-Amp", "50-Amp", "Wi-Fi", "Pets"];
+const amenity = ["sewage", "water", "electricity"];
 
 const CampSelect = () => {
   const initialCheckedAmenities = amenity.reduce((acc, amenity) => {
@@ -55,8 +55,6 @@ const CampSelect = () => {
       const availableSiteData = await axios.get(`/bookings/2/${parsedArrivalDate}/${parsedDepartureDate}`);
       const availableSites = Object.entries(availableSiteData);
       setAvailableSites(availableSites[0][1]);
-      console.log(availableSites)
-      console.log(availableSites[0][1])
     }
     catch (err) {
       console.log(err)
@@ -64,13 +62,8 @@ const CampSelect = () => {
   };
 
   useEffect(() => {
-    console.log(checkedAmenities);
-    console.log(numberOfPersons);
-    console.log(numberOfPets);
-    console.log(dayjs(arrivalDate.$d).format("YYYY-MM-DD"));
-    console.log(dayjs(departureDate.$d).format("YYYY-MM-DD"));
-    console.log(siteType); 
     fetchAvailableSites(arrivalDate, departureDate);
+    
   }, [
     checkedAmenities,
     numberOfPersons,
@@ -124,6 +117,19 @@ const CampSelect = () => {
       ...prevCheckedAmenities,
       [amenity]: !prevCheckedAmenities[amenity],
     }));
+    
+    //Filter availableSites by the checked amenity toggles
+    
+    let filteredSites = availableSites.filter(function(site) {
+      console.log(site[amenity]===true)
+      
+      return site[amenity] === true
+    });
+    //Set availableSites state to new filteredSites array.
+    //Not working
+    console.log(filteredSites)
+    setAvailableSites(filteredSites);
+    
   };
 
   return (
@@ -248,16 +254,16 @@ const CampSelect = () => {
             </div>
             <div className="flex flex-col w-1/2 mr-10 rounded-r-[40px] gap-3">
               <div className="border-2 border-stroke-color h-1/2 mt-5 rounded-tr-[40px]">
-                <h1 className="text-2xl">test</h1>
+                <h1 className="text-2xl">Sites</h1>
                 <div>
-
+                  
                   { availableSites.map((site) => (
                     <>
                     <h1 key={site.id}>{site.name} - $ {site.price}/night</h1>
                     <p onClick={() => handleBooking(site.id, arrivalDate, departureDate)}>Book now</p>
                     </>
                   ))}
-                    
+                  
                 </div>
               </div>
               <div className="border-2 border-stroke-color h-1/2 mb-20 rounded-br-[40px]"></div>
