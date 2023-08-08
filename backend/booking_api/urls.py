@@ -17,6 +17,8 @@ urlpatterns = [
     path('site', views.SiteView.as_view()),
     path('site/<int:site_id>', views.SiteView.as_view()),
     path('bookings/<int:park_id>/<str:arrival>/<str:departure>', views.SiteBookingView.as_view()),
+    path('bookings/<int:park_id>', views.SiteBookingView.as_view()),
+
     #path('bookings/<int:park_id>/<int:site_id>', views.SiteBookingView.as_view()),
 
     #path('park/<int:park_id>', views.ParkView.as_view(), name='park'),

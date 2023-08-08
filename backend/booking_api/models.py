@@ -48,7 +48,7 @@ class Site(models.Model):
     park_id = models.ForeignKey(Park, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     site_type = models.CharField(choices=SITE_TYPES, max_length=30)
-    electicity = models.BooleanField(default=False)
+    electricity = models.BooleanField(default=False)
     water = models.BooleanField(default=False)
     sewage = models.BooleanField(default=False)
 
