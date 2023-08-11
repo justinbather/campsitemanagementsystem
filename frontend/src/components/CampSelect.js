@@ -121,7 +121,7 @@ const CampSelect = () => {
     //Filter availableSites by the checked amenity toggles
     
     let filteredSites = availableSites.filter(function(site) {
-      console.log(site[amenity]===true)
+      console.log(amenity===true)
       
       return site[amenity] === true
     });
@@ -130,6 +130,33 @@ const CampSelect = () => {
     console.log(filteredSites)
     setAvailableSites(filteredSites);
     
+  };
+
+  const handleCheckboxChange = (e) => {
+    /*
+    This only works for one check box. Will need to create a list of checked boxes which we can loop through so that we can filter
+    with multiple boxes toggled
+    */
+   
+    // Stores boolean value if changed checkbox is true
+    const isChecked = e.target.checked;
+    const checkedAmenity = e.target.id;
+    
+    //if checkbox is true
+    if(isChecked) {
+      //filter availableSites array to filteredSites array with amenity selected in checkbox
+      let filteredSites = availableSites.filter(function(site) {
+        return site[checkedAmenity] === true
+      });
+      
+      setAvailableSites(filteredSites);
+  } else {
+    //If checkbox changed to false, re-fetch the available sites with given dates.
+    fetchAvailableSites(arrivalDate, departureDate);
+    
+  }
+    
+    console.log(checkedAmenity)
   };
 
   return (
@@ -202,19 +229,39 @@ const CampSelect = () => {
                   <div className="w-3/5 flex flex-col">
                     <h3 className="font-bold text-sm pl-3 pb-1">Amenities</h3>
                     <ul className="columns-2 flex-col bg-form-color gap-0 rounded-2xl items-center">
-                      {amenity.map(function (amenity, i) {
-                        return (
-                          <li className="py-3 pl-3 text-sm flex" key={i}>
+                      
+                        
+                          <li className="py-3 pl-3 text-sm flex" >
                             <input
                               type="checkbox"
                               className="mx-1"
-                              checked={checkedAmenities[amenity]}
-                              onChange={() => handleCheckboxToggle(amenity)}
+                              id="water"
+                              onChange={e => handleCheckboxChange(e)}
                             />
-                            {amenity}
+                            Water
                           </li>
-                        );
-                      })}
+                          <li className="py-3 pl-3 text-sm flex">
+                          <input
+                            type="checkbox"
+                            id="electricity"
+                            className="mx-1"
+                            
+                            onChange={e => handleCheckboxChange(e)}
+                          />
+                          Electricity
+                        </li>
+                        <li className="py-3 pl-3 text-sm flex">
+                        <input
+                          type="checkbox"
+                          id='sewage'
+                          className="mx-1"
+                          
+                          onChange={e => handleCheckboxChange(e)}
+                        />
+                        Sewage
+                      </li>
+                        
+                     
                     </ul>
                   </div>
                   <div className="borde w-1/2 h-full flex flex-col pl-5 justify-center">
