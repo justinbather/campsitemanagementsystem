@@ -27,14 +27,9 @@ const trailerTypeOptions = [
 const amenity = ["sewage", "water", "electricity"];
 
 const CampSelect = () => {
-  const initialCheckedAmenities = amenity.reduce((acc, amenity) => {
-    acc[amenity] = false;
-    return acc;
-  }, {});
 
-  const [checkedAmenities, setCheckedAmenities] = useState(
-    initialCheckedAmenities
-  );
+
+  const [checkedAmenities, setCheckedAmenities] = useState([]);
   const [campsiteName, setCampsiteName] = useState("Campsite Name");
   const [arrivalDate, setArrivalDate] = useState(dayjs());
   const [departureDate, setDepartureDate] = useState(dayjs());
@@ -42,6 +37,7 @@ const CampSelect = () => {
   const [numberOfPets, setNumberOfPets] = useState(0);
   const [siteType, setSiteType] = useState(null);
   const [availableSites, setAvailableSites] = useState([]);
+  const[rawAvailableSites, setRawAvailableSites] = useState([]);
 
   //Fetch from api when filter dates changes
   //Parses arrivalDate and departureDate to yyyy/mm/dd format
@@ -55,6 +51,7 @@ const CampSelect = () => {
       const availableSiteData = await axios.get(`/bookings/2/${parsedArrivalDate}/${parsedDepartureDate}`);
       const availableSites = Object.entries(availableSiteData);
       setAvailableSites(availableSites[0][1]);
+      setRawAvailableSites(availableSites[0][1]);
     }
     catch (err) {
       console.log(err)
@@ -112,52 +109,23 @@ const CampSelect = () => {
     }
   };
 
-  const handleCheckboxToggle = (amenity) => {
-    setCheckedAmenities((prevCheckedAmenities) => ({
-      ...prevCheckedAmenities,
-      [amenity]: !prevCheckedAmenities[amenity],
-    }));
-    
-    //Filter availableSites by the checked amenity toggles
-    
-    let filteredSites = availableSites.filter(function(site) {
-      console.log(amenity===true)
-      
-      return site[amenity] === true
-    });
-    //Set availableSites state to new filteredSites array.
-    //Not working
-    console.log(filteredSites)
-    setAvailableSites(filteredSites);
-    
+  // Displayed on page depending on toggled checkboxes
+  const filteredSites = availableSites.filter((site) => 
+      checkedAmenities.length > 0  // If checked amenities 
+        ? checkedAmenities.every((amenity) => site[amenity] === true) // filter available sites so that every site has the checked amenitys
+        : availableSites // else just set filtered sites to availableSites as fetched from api
+        );
+  
+  // Called by checkbox onClick()
+  const handleCheckboxFilter = (e) => {
+    if (e.target.checked) {
+      setCheckedAmenities([...checkedAmenities, e.target.id])
+    } else {
+      setCheckedAmenities(checkedAmenities.filter((amenity) => amenity !== e.target.id))
+    }
   };
 
-  const handleCheckboxChange = (e) => {
-    /*
-    This only works for one check box. Will need to create a list of checked boxes which we can loop through so that we can filter
-    with multiple boxes toggled
-    */
-   
-    // Stores boolean value if changed checkbox is true
-    const isChecked = e.target.checked;
-    const checkedAmenity = e.target.id;
-    
-    //if checkbox is true
-    if(isChecked) {
-      //filter availableSites array to filteredSites array with amenity selected in checkbox
-      let filteredSites = availableSites.filter(function(site) {
-        return site[checkedAmenity] === true
-      });
-      
-      setAvailableSites(filteredSites);
-  } else {
-    //If checkbox changed to false, re-fetch the available sites with given dates.
-    fetchAvailableSites(arrivalDate, departureDate);
-    
-  }
-    
-    console.log(checkedAmenity)
-  };
+  
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -236,7 +204,7 @@ const CampSelect = () => {
                               type="checkbox"
                               className="mx-1"
                               id="water"
-                              onChange={e => handleCheckboxChange(e)}
+                              onChange={e => handleCheckboxFilter(e)}
                             />
                             Water
                           </li>
@@ -246,7 +214,7 @@ const CampSelect = () => {
                             id="electricity"
                             className="mx-1"
                             
-                            onChange={e => handleCheckboxChange(e)}
+                            onChange={e => handleCheckboxFilter(e)}
                           />
                           Electricity
                         </li>
@@ -256,7 +224,7 @@ const CampSelect = () => {
                           id='sewage'
                           className="mx-1"
                           
-                          onChange={e => handleCheckboxChange(e)}
+                          onChange={e => handleCheckboxFilter(e)}
                         />
                         Sewage
                       </li>
@@ -304,7 +272,7 @@ const CampSelect = () => {
                 <h1 className="text-2xl">Sites</h1>
                 <div>
                   
-                  { availableSites.map((site) => (
+                  { filteredSites.map((site) => (
                     <>
                     <h1 key={site.id}>{site.name} - $ {site.price}/night</h1>
                     <p onClick={() => handleBooking(site.id, arrivalDate, departureDate)}>Book now</p>
