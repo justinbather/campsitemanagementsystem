@@ -12,6 +12,7 @@ import reset_icon from "../assets/reset_icon.svg";
 import adjust_icon from "../assets/adjust_icon.svg";
 import plus_icon from "../assets/plus_icon.svg";
 import minus_icon from "../assets/minus_icon.svg";
+import SiteList from "./SiteList";
 
 const siteTypeOptions = [
   { label: "Back in", value: "backin" },
@@ -285,8 +286,13 @@ const CampSelect = () => {
             </div>
           </div>
         </div>
+      
+        <SiteList sites={filteredSites}/>
+       
       </div>
+      
     </LocalizationProvider>
+   
   );
 };
 
