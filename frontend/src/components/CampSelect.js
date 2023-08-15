@@ -59,17 +59,7 @@ const CampSelect = () => {
     }
   };
 
-  useEffect(() => {
-    fetchAvailableSites(arrivalDate, departureDate);
-    
-  }, [
-    checkedAmenities,
-    numberOfPersons,
-    numberOfPets,
-    arrivalDate,
-    departureDate,
-    siteType,
-  ]);
+  
 
   const handleBooking = async (siteId, arrivalDate, departureDate) => {
     // onClick function called when user clicks "book now" next to listed sites
@@ -126,6 +116,18 @@ const CampSelect = () => {
     }
   };
 
+  useEffect(() => {
+    fetchAvailableSites(arrivalDate, departureDate);
+    
+  }, [
+    checkedAmenities,
+    numberOfPersons,
+    numberOfPets,
+    arrivalDate,
+    departureDate,
+    siteType,
+
+  ]);
   
 
   return (
