@@ -18,6 +18,7 @@ urlpatterns = [
     path('site/<int:site_id>', views.SiteView.as_view()),
     path('bookings/<int:park_id>/<str:arrival>/<str:departure>', views.SiteBookingView.as_view()),
     path('bookings/<int:park_id>', views.SiteBookingView.as_view()),
+    path('siteimage/<int:site_id>', views.SiteImageView.as_view()),
 
     #path('bookings/<int:park_id>/<int:site_id>', views.SiteBookingView.as_view()),
 

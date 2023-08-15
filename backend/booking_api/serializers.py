@@ -25,3 +25,8 @@ class CreateSiteBookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = SiteBooking
         fields = ('site_id', 'start_date', 'end_date', 'payment_made')
+
+class SiteImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SiteImage
+        fields = ('__all__')
