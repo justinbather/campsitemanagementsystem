@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status
 
-from .serializers import ParkSerializer, SiteBookingSerializer, SiteSerializer, CreateSiteBookingSerializer
+from .serializers import ParkSerializer, SiteBookingSerializer, SiteSerializer, CreateSiteBookingSerializer, SiteImageSerializer
 
 from .models import *
 
@@ -48,7 +48,7 @@ class SiteBookingView(APIView):
 
         available_sites = Site.objects.filter(park_id=park_id).exclude(sitebooking__start_date__lte=arrival, sitebooking__end_date__gte=arrival)\
             .exclude(sitebooking__start_date__lte=departure, sitebooking__end_date__gte=departure)
-    
+
 
         serializer = SiteSerializer(available_sites, many=True)
 
@@ -87,6 +87,15 @@ class SiteBookingView(APIView):
             return Response({'status':'That site is booked. Please try different dates'}, status=status.HTTP_400_BAD_REQUEST)
         print("invalid data")
         return Response({'status':'Incorrect booking info'}, status=status.HTTP_400_BAD_REQUEST)
+
+class SiteImageView(APIView):
+    def get(self, request, site_id, *args, **kwargs):
+        
+        images = SiteImage.objects.filter(site=site_id)
+        print(site_id)
+        serializer = SiteImageSerializer(images, many=True)
+
+        return Response(serializer.data)
 
 
 class SiteView(APIView):

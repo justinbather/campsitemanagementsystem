@@ -37,8 +37,17 @@ class CustomUserAdmin(UserAdmin):
 class SiteBookingAdmin(admin.ModelAdmin):
     list_display = ("park", "site_id", "start_date", "end_date", "total_cost")
 
-    
 
-admin.site.register(Site)
+class SiteImageAdmin(admin.StackedInline):
+    model = SiteImage
+
+@admin.register(Site)
+class SiteAdmin(admin.ModelAdmin):
+    inlines = [SiteImageAdmin]
+
+    class Meta:
+        model = Site
+
+
 admin.site.register(Park)
 

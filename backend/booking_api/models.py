@@ -34,6 +34,9 @@ class Park(models.Model):
     def __str__(self):
         return self.name
     
+
+from PIL import Image
+
 class Site(models.Model):
     PULL_THROUGH = "Pull Through"
     BACK_IN = "Back In"
@@ -51,6 +54,8 @@ class Site(models.Model):
     electricity = models.BooleanField(default=False)
     water = models.BooleanField(default=False)
     sewage = models.BooleanField(default=False)
+    photo = models.ImageField(upload_to="./assets/site-images")
+
 
 
     def __str__(self):
@@ -70,3 +75,18 @@ class SiteBooking(models.Model):
     def __str__(self):
         return self.site_id.name
 
+
+
+class SiteImage(models.Model):
+    site = models.ForeignKey(Site, on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to="./assets/site-images")
+    description = models.CharField(max_length=50)
+
+    
+
+    def save(self, *args, **kwargs):
+        super(SiteImage, self).save(*args, **kwargs)
+        img = Image.open(self.photo.path)
+        if img.height > 1125 or img.width > 1125:
+            img.thumbnail((1125,1125))
+        img.save(self.photo.path,quality=70,optimize=True)
