@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from rest_framework import viewsets
 from rest_framework.views import APIView
@@ -173,7 +173,7 @@ class StripeCheckoutSession(APIView):
                 cancel_url= FRONTEND_CHECKOUT_FAILED_URL,
                 )
             print('session created')
-            return Response(checkout_session.url, status=status.HTTP_303_SEE_OTHER)
+            return HttpResponseRedirect(checkout_session.url)
         except Exception as e:
             print(e)
 
