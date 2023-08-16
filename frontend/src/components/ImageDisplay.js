@@ -29,8 +29,6 @@ const ImageDisplay = (props) => {
     });
   }, [props.sites]);
 
-  console.log(images);
-
   return (
     <div>
       <Carousel

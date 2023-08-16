@@ -138,7 +138,7 @@ const CampSelect = () => {
           </h1>
 
           <div className="w-[1024px] h-[800px] flex rounded-[40px] gap-3">
-            <div className=" border-stroke-color border-2 w-1/2 mt-5 mb-20 ml-10 rounded-l-[40px]">
+            <div className=" border-stroke-color border-2 mt-5 mb-20 ml-10 rounded-l-[40px]">
               <header className="w-full flex pl-10 pt-3">
                 <img src={tent_icon} className="w-[50px]" />
                 <h2 className="pt-3 pl-2 text-[22px] font-bold text-center">
@@ -264,12 +264,15 @@ const CampSelect = () => {
             </div>
             <div className="flex flex-col w-1/2 mr-10 rounded-r-[40px] gap-3">
               <div className="flex justify-center overflow-clip border-2 border-stroke-color h-1/2 mt-5 rounded-tr-[40px] items-center">
-                <div className="w-full h-full overflow-auto">
+                <div className="w-full h-full overflow-hidden">
                   <ImageDisplay sites={filteredSites}></ImageDisplay>
                 </div>
               </div>
-              <div className="border-2 border-stroke-color h-1/2 mb-20 rounded-br-[40px] overflow-hidden">
+              <div className="border-2 border-stroke-color h-1/2 mb-20 rounded-br-[40px] overflow-hidden flex flex-col">
                 <SiteList sites={filteredSites} />
+                <div className="flex justify-center py-4 bg-blue-primary hover:bg-blue-primary/75 transition cursor-pointer">
+                  <h1 className="font-bold">Confirm</h1>
+                </div>
               </div>
             </div>
           </div>
