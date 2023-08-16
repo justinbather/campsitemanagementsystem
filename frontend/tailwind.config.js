@@ -2,6 +2,7 @@
 module.exports = {
   content: [
     "./src/**/*.{html,js}",
+    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
     require.resolve("react-widgets/styles.css"),
   ],
   theme: {
@@ -16,5 +17,5 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: [require("react-widgets-tailwind")],
+  plugins: [require("flowbite/plugin")],
 };
