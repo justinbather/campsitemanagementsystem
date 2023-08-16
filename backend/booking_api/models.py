@@ -67,6 +67,10 @@ class SiteBooking(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     payment_made = models.BooleanField()
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=20)
+    email = models.CharField(max_length=60)
+    
     
     def total_cost(self):
         return (self.site_id.price * (self.end_date - self.start_date).days)

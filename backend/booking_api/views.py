@@ -1,10 +1,13 @@
 from django.shortcuts import render
-
+from django.http import JsonResponse
+from django.shortcuts import redirect
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status
+from django.conf import settings
+import stripe
 
 from .serializers import ParkSerializer, SiteBookingSerializer, SiteSerializer, CreateSiteBookingSerializer, SiteImageSerializer
 
@@ -79,7 +82,9 @@ class SiteBookingView(APIView):
             except SiteBooking.DoesNotExist:
                 booking = SiteBooking.objects.create(park_id=park_id, site_id=serializer.validated_data['site_id'], 
                                                      start_date=serializer.validated_data['start_date'], 
-                                                     end_date=serializer.validated_data['end_date'], payment_made = serializer.validated_data['payment_made'])
+                                                     end_date=serializer.validated_data['end_date'], payment_made = serializer.validated_data['payment_made'],
+                                                     first_name=serializer.validated_data['first_name'], last_name=serializer.validated_data['last_name'],
+                                                      email=serializer.validated_data['email'] )
                 
                 return Response(SiteBookingSerializer(booking).data)
             
@@ -142,11 +147,67 @@ class ParkView(APIView):
         return Response({'status':'Park Deleted'}, status=status.HTTP_200_OK)
 
 
+FRONTEND_CHECKOUT_SUCCESS_URL = settings.CHECKOUT_SUCCESS_URL
+FRONTEND_CHECKOUT_FAILED_URL = settings.CHECKOUT_FAILED_URL
+stripe.api_key = settings.STRIPE_TEST
+class StripeCheckoutSession(APIView):
+    def post(self, request, *args, **kwargs):
+        data_dict = dict(request.data)
+        price = data_dict['price'][0]
+        product_name = data_dict['product_name'][0]
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                
+            line_items =[{
+                'price_data' :{
+                'currency' : 'usd',  
+                'product_data': {
+                'name': product_name,
+                },
+                'unit_amount': price
+                },
+                'quantity' : 1
+                }],
+                mode= 'payment',
+                success_url= FRONTEND_CHECKOUT_SUCCESS_URL,
+                cancel_url= FRONTEND_CHECKOUT_FAILED_URL,
+                )
+            print('session created')
+            return Response(checkout_session.url, status=status.HTTP_303_SEE_OTHER)
+        except Exception as e:
+            print(e)
 
+            return e
+    
+class WebhookTest(APIView):
+    
+  def post(self , request):
+    event = None
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    webhook_secret = settings.WEBHOOK_SECRET
 
+    try:
+      event = stripe.Webhook.construct_event(
+        payload ,sig_header , webhook_secret
+        )
+    except ValueError as err:
+        # Invalid payload
+        raise err
+    except stripe.error.SignatureVerificationError as err:
+        # Invalid signature
+        raise err
 
+    # Handle the event
+    if event.type == 'payment_intent.succeeded':
+      payment_intent = event.data.object 
+      print("--------payment_intent ---------->" , payment_intent)
+    elif event.type == 'payment_method.attached':
+      payment_method = event.data.object 
+      print("--------payment_method ---------->" , payment_method)
+    # ... handle other event types
+    else:
+      print('Unhandled event type {}'.format(event.type))
 
-def test(request):
-    return render(request, 'index.html')
-
+    return JsonResponse(success=True, safe=False)
 
