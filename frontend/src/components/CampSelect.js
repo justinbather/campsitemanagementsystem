@@ -13,6 +13,7 @@ import adjust_icon from "../assets/adjust_icon.svg";
 import plus_icon from "../assets/plus_icon.svg";
 import minus_icon from "../assets/minus_icon.svg";
 import SiteList from "./SiteList";
+import ImageDisplay from "./ImageDisplay";
 
 const siteTypeOptions = [
   { label: "Back in", value: "backin" },
@@ -28,8 +29,6 @@ const trailerTypeOptions = [
 const amenity = ["sewage", "water", "electricity"];
 
 const CampSelect = () => {
-
-
   const [checkedAmenities, setCheckedAmenities] = useState([]);
   const [campsiteName, setCampsiteName] = useState("Campsite Name");
   const [arrivalDate, setArrivalDate] = useState(dayjs());
@@ -38,7 +37,7 @@ const CampSelect = () => {
   const [numberOfPets, setNumberOfPets] = useState(0);
   const [siteType, setSiteType] = useState(null);
   const [availableSites, setAvailableSites] = useState([]);
-  const[rawAvailableSites, setRawAvailableSites] = useState([]);
+  const [rawAvailableSites, setRawAvailableSites] = useState([]);
 
   //Fetch from api when filter dates changes
   //Parses arrivalDate and departureDate to yyyy/mm/dd format
@@ -47,32 +46,31 @@ const CampSelect = () => {
 
   const fetchAvailableSites = async (arrivalDate, departureDate) => {
     try {
-      const parsedArrivalDate = dayjs(arrivalDate.$d).format("YYYY-MM-DD")
-      const parsedDepartureDate = dayjs(departureDate.$d).format("YYYY-MM-DD")
-      const availableSiteData = await axios.get(`/bookings/2/${parsedArrivalDate}/${parsedDepartureDate}`);
+      const parsedArrivalDate = dayjs(arrivalDate.$d).format("YYYY-MM-DD");
+      const parsedDepartureDate = dayjs(departureDate.$d).format("YYYY-MM-DD");
+      const availableSiteData = await axios.get(
+        `/bookings/2/${parsedArrivalDate}/${parsedDepartureDate}`
+      );
       const availableSites = Object.entries(availableSiteData);
       setAvailableSites(availableSites[0][1]);
       setRawAvailableSites(availableSites[0][1]);
-    }
-    catch (err) {
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
   };
-
-  
 
   const handleBooking = async (siteId, arrivalDate, departureDate) => {
     // onClick function called when user clicks "book now" next to listed sites
     try {
-      const parsedArrivalDate = dayjs(arrivalDate.$d).format("YYYY-MM-DD")
-      const parsedDepartureDate = dayjs(departureDate.$d).format("YYYY-MM-DD")
+      const parsedArrivalDate = dayjs(arrivalDate.$d).format("YYYY-MM-DD");
+      const parsedDepartureDate = dayjs(departureDate.$d).format("YYYY-MM-DD");
       const booking = await axios.post(
         "/bookings/2",
         {
           site_id: siteId,
           start_date: parsedArrivalDate,
           end_date: parsedDepartureDate,
-          payment_made: false //Change this before production to variable based on payment taken from user
+          payment_made: false, //Change this before production to variable based on payment taken from user
         },
         {
           headers: {
@@ -80,9 +78,9 @@ const CampSelect = () => {
           },
         }
       );
-      alert('Booking Success')
-    } catch(err){
-      console.log(err)
+      alert("Booking Success");
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -101,24 +99,26 @@ const CampSelect = () => {
   };
 
   // Displayed on page depending on toggled checkboxes
-  const filteredSites = availableSites.filter((site) => 
-      checkedAmenities.length > 0  // If checked amenities 
+  const filteredSites = availableSites.filter(
+    (site) =>
+      checkedAmenities.length > 0 // If checked amenities
         ? checkedAmenities.every((amenity) => site[amenity] === true) // filter available sites so that every site has the checked amenitys
         : availableSites // else just set filtered sites to availableSites as fetched from api
-        );
-  
+  );
+
   // Called by checkbox onClick()
   const handleCheckboxFilter = (e) => {
     if (e.target.checked) {
-      setCheckedAmenities([...checkedAmenities, e.target.id])
+      setCheckedAmenities([...checkedAmenities, e.target.id]);
     } else {
-      setCheckedAmenities(checkedAmenities.filter((amenity) => amenity !== e.target.id))
+      setCheckedAmenities(
+        checkedAmenities.filter((amenity) => amenity !== e.target.id)
+      );
     }
   };
 
   useEffect(() => {
     fetchAvailableSites(arrivalDate, departureDate);
-    
   }, [
     checkedAmenities,
     numberOfPersons,
@@ -126,9 +126,7 @@ const CampSelect = () => {
     arrivalDate,
     departureDate,
     siteType,
-
   ]);
-  
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -200,39 +198,33 @@ const CampSelect = () => {
                   <div className="w-3/5 flex flex-col">
                     <h3 className="font-bold text-sm pl-3 pb-1">Amenities</h3>
                     <ul className="columns-2 flex-col bg-form-color gap-0 rounded-2xl items-center">
-                      
-                        
-                          <li className="py-3 pl-3 text-sm flex" >
-                            <input
-                              type="checkbox"
-                              className="mx-1"
-                              id="water"
-                              onChange={e => handleCheckboxFilter(e)}
-                            />
-                            Water
-                          </li>
-                          <li className="py-3 pl-3 text-sm flex">
-                          <input
-                            type="checkbox"
-                            id="electricity"
-                            className="mx-1"
-                            
-                            onChange={e => handleCheckboxFilter(e)}
-                          />
-                          Electricity
-                        </li>
-                        <li className="py-3 pl-3 text-sm flex">
+                      <li className="py-3 pl-3 text-sm flex">
                         <input
                           type="checkbox"
-                          id='sewage'
                           className="mx-1"
-                          
-                          onChange={e => handleCheckboxFilter(e)}
+                          id="water"
+                          onChange={(e) => handleCheckboxFilter(e)}
+                        />
+                        Water
+                      </li>
+                      <li className="py-3 pl-3 text-sm flex">
+                        <input
+                          type="checkbox"
+                          id="electricity"
+                          className="mx-1"
+                          onChange={(e) => handleCheckboxFilter(e)}
+                        />
+                        Electricity
+                      </li>
+                      <li className="py-3 pl-3 text-sm flex">
+                        <input
+                          type="checkbox"
+                          id="sewage"
+                          className="mx-1"
+                          onChange={(e) => handleCheckboxFilter(e)}
                         />
                         Sewage
                       </li>
-                        
-                     
                     </ul>
                   </div>
                   <div className="borde w-1/2 h-full flex flex-col pl-5 justify-center">
@@ -271,30 +263,19 @@ const CampSelect = () => {
               </div>
             </div>
             <div className="flex flex-col w-1/2 mr-10 rounded-r-[40px] gap-3">
-              <div className="border-2 border-stroke-color h-1/2 mt-5 rounded-tr-[40px]">
-                <h1 className="text-2xl">Sites</h1>
-                <div>
-                  
-                  { filteredSites.map((site) => (
-                    <>
-                    <h1 key={site.id}>{site.name} - $ {site.price}/night</h1>
-                    <p onClick={() => handleBooking(site.id, arrivalDate, departureDate)}>Book now</p>
-                    </>
-                  ))}
-                  
+              <div className="flex justify-center overflow-clip border-2 border-stroke-color h-1/2 mt-5 rounded-tr-[40px] items-center">
+                <div className="w-full h-full overflow-auto">
+                  <ImageDisplay sites={filteredSites}></ImageDisplay>
                 </div>
               </div>
-              <div className="border-2 border-stroke-color h-1/2 mb-20 rounded-br-[40px]"></div>
+              <div className="border-2 border-stroke-color h-1/2 mb-20 rounded-br-[40px] overflow-hidden">
+                <SiteList sites={filteredSites} />
+              </div>
             </div>
           </div>
         </div>
-      
-        <SiteList sites={filteredSites}/>
-       
       </div>
-      
     </LocalizationProvider>
-   
   );
 };
 
