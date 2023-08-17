@@ -9,7 +9,6 @@ import axios from "axios";
 import link_icon from "../assets/link_icon.svg";
 import tent_icon from "../assets/tent.png";
 import reset_icon from "../assets/reset_icon.svg";
-import adjust_icon from "../assets/adjust_icon.svg";
 import plus_icon from "../assets/plus_icon.svg";
 import minus_icon from "../assets/minus_icon.svg";
 import SiteList from "./SiteList";
@@ -38,6 +37,7 @@ const CampSelect = () => {
   const [siteType, setSiteType] = useState(null);
   const [availableSites, setAvailableSites] = useState([]);
   const [rawAvailableSites, setRawAvailableSites] = useState([]);
+  const [selectedSiteId, setSelectedSiteId] = useState(null);
 
   //Fetch from api when filter dates changes
   //Parses arrivalDate and departureDate to yyyy/mm/dd format
@@ -129,6 +129,10 @@ const CampSelect = () => {
     setCheckedAmenities(initialCheckedAmenities);
   };
 
+  const handleSiteListClick = (siteId) => {
+    setSelectedSiteId(siteId);
+  };
+
   useEffect(() => {
     fetchAvailableSites(arrivalDate, departureDate);
   }, [
@@ -142,7 +146,7 @@ const CampSelect = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div className="bg-[#1E1E1E] h-screen flex items-center justify-center">
+      <div className="bg-[#1E1E1E] max-h-screen h-screen flex items-center justify-center">
         <div className="bg-[#FFFFFF] w-[1024px] h-[800px] flex flex-col rounded-[40px]">
           <h1 className="w-full justify-center pt-5 text-3xl font-bold underline flex">
             {campsiteName}
@@ -187,7 +191,7 @@ const CampSelect = () => {
               <div className="h-3/5 mx-10">
                 <section className="flex justify-between">
                   <h3 className="font-bold">Filter</h3>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 hover:bg-gray-100 rounded-full p-1">
                     <img
                       src={reset_icon}
                       className="w-[25px] cursor-pointer"
@@ -275,13 +279,16 @@ const CampSelect = () => {
               </div>
             </div>
             <div className="flex flex-col w-1/2 mr-10 rounded-r-[40px] gap-3">
-              <div className="flex justify-center overflow-clip border-2 border-stroke-color h-1/2 mt-5 rounded-tr-[40px] items-center">
+              <div className="max-h-[316px] flex justify-center overflow-clip border-2 h-1/2 border-stroke-color mt-5 rounded-tr-[40px] items-center">
                 <div className="w-full h-full overflow-hidden">
-                  <ImageDisplay sites={filteredSites}></ImageDisplay>
+                  <ImageDisplay selectedSite={selectedSiteId}></ImageDisplay>
                 </div>
               </div>
-              <div className="border-2 border-stroke-color h-1/2 mb-20 rounded-br-[40px] overflow-hidden flex flex-col">
-                <SiteList sites={filteredSites} />
+              <div className="max-h-[316px] border-2 border-stroke-color h-1/2 mb-20 rounded-br-[40px] overflow-hidden overflow-y-auto flex flex-col">
+                <SiteList
+                  sites={filteredSites}
+                  onSiteClick={handleSiteListClick}
+                />
                 <div className="flex justify-center py-4 bg-blue-primary hover:bg-blue-primary/75 transition cursor-pointer">
                   <h1 className="font-bold">Confirm</h1>
                 </div>
