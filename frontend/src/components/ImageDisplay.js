@@ -19,7 +19,7 @@ const ImageDisplay = (props) => {
 
   useEffect(() => {
     if (props.selectedSite) {
-      fetchImages(props.selectedSite);
+      fetchImages(props.selectedSite.id);
     }
   }, [props.selectedSite]);
 

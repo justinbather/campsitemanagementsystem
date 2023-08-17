@@ -38,7 +38,7 @@ const CampSelect = () => {
   const [siteType, setSiteType] = useState(null);
   const [availableSites, setAvailableSites] = useState([]);
   const [rawAvailableSites, setRawAvailableSites] = useState([]);
-  const [selectedSiteId, setSelectedSiteId] = useState(null);
+  const [selectedSite, setSelectedSite] = useState([]);
 
   //Fetch from api when filter dates changes
   //Parses arrivalDate and departureDate to yyyy/mm/dd format
@@ -130,8 +130,8 @@ const CampSelect = () => {
     setCheckedAmenities(initialCheckedAmenities);
   };
 
-  const handleSiteListClick = (siteId) => {
-    setSelectedSiteId(siteId);
+  const handleSiteListClick = (site) => {
+    setSelectedSite(site);
   };
 
   useEffect(() => {
@@ -282,7 +282,7 @@ const CampSelect = () => {
             <div className="flex flex-col w-1/2 mr-10 rounded-r-[40px] gap-3">
               <div className="max-h-[316px] flex justify-center overflow-clip border-2 h-1/2 border-stroke-color mt-5 rounded-tr-[40px] items-center">
                 <div className="w-full h-full overflow-hidden">
-                  <ImageDisplay selectedSite={selectedSiteId}></ImageDisplay>
+                  <ImageDisplay selectedSite={selectedSite}></ImageDisplay>
                 </div>
               </div>
               <div className="max-h-[316px] border-2 border-stroke-color h-1/2 mb-20 rounded-br-[40px] overflow-hidden overflow-y-auto flex flex-col">

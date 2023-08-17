@@ -5,7 +5,7 @@ const SiteList = (props) => {
 
   const handleSiteClick = (site) => {
     setSelectedSite(site);
-    props.func(site)
+    props.onSiteClick(site)
   };
   
 
@@ -20,7 +20,7 @@ const SiteList = (props) => {
             }`}
             onClick={() => {
               props.onSiteClick(site.id);
-              handleSiteClick(site.id);
+              handleSiteClick(site);
             }}
           >
             <h2 className="font-bold">Site {site.id}</h2>
