@@ -131,6 +131,10 @@ const CampSelect = () => {
     setCheckedAmenities(initialCheckedAmenities);
   };
 
+  const handleSiteListClick = (siteId) => {
+    setSelectedSiteId(siteId);
+  };
+
   useEffect(() => {
     fetchAvailableSites(arrivalDate, departureDate);
   }, [
@@ -282,8 +286,11 @@ const CampSelect = () => {
                   <ImageDisplay selectedSite={selectedSiteId}></ImageDisplay>
                 </div>
               </div>
-              <div className="border-2 border-stroke-color h-1/2 mb-20 rounded-br-[40px] overflow-hidden flex flex-col">
-                <SiteList sites={filteredSites} />
+              <div className="max-h-[316px] border-2 border-stroke-color h-1/2 mb-20 rounded-br-[40px] overflow-hidden overflow-y-auto flex flex-col">
+                <SiteList
+                  sites={filteredSites}
+                  onSiteClick={handleSiteListClick}
+                />
                 <div className="flex justify-center py-4 bg-blue-primary hover:bg-blue-primary/75 transition cursor-pointer">
                   <h1 className="font-bold">Confirm</h1>
                 </div>

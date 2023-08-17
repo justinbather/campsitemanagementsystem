@@ -21,6 +21,7 @@ const SiteList = (props) => {
             onClick={() => {
               props.onSiteClick(site.id);
               handleSiteClick(site);
+              handleSiteClick(site.id);
             }}
           >
             <h2 className="font-bold">Site {site.id}</h2>
