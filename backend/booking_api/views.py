@@ -156,16 +156,30 @@ class StripeCheckoutSession(APIView):
         data_dict = dict(request.data) #Take Site and booking info and create a sitebooking object
         print(data_dict)
         price = data_dict['price'][0] #Filter through object to send info with pricing etc to stripe
-        product_name = data_dict['product_name'][0]
+        park_id = int(data_dict["park_id"][0])
+        park_obj = Park.objects.get(id=park_id)
+        site_id = int(data_dict['site_id'][0])
+        site_obj = Site.objects.get(id=site_id)
+        start_date = data_dict['start_date'][0] 
+        end_date = data_dict['end_date'][0]
+        first_name = "John"
+        last_name = "Doe"
+        email = "johndoe@hotmail.com"
+        payment_made = False
+
+        
+        booking_obj = SiteBooking.objects.create(park=park_obj, site_id=site_obj, start_date=start_date, end_date=end_date, payment_made=payment_made, first_name=first_name, last_name=last_name, email=email)
+        
+        
         try:
 
             checkout_session = stripe.checkout.Session.create(
                 
             line_items =[{
                 'price_data' :{
-                'currency' : 'usd',  
+                'currency' : 'cad',  
                 'product_data': {
-                'name': product_name,
+                'name': site_id,
                 },
                 'unit_amount': price
                 },
