@@ -54,7 +54,6 @@ class Site(models.Model):
     electricity = models.BooleanField(default=False)
     water = models.BooleanField(default=False)
     sewage = models.BooleanField(default=False)
-    photo = models.ImageField(upload_to="./assets/site-images")
 
 
 

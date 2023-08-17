@@ -54,6 +54,7 @@ class SiteBookingView(APIView):
 
 
         serializer = SiteSerializer(available_sites, many=True)
+        print(serializer.data)
 
         return Response(serializer.data)
     
@@ -152,10 +153,12 @@ FRONTEND_CHECKOUT_FAILED_URL = settings.CHECKOUT_FAILED_URL
 stripe.api_key = settings.STRIPE_TEST
 class StripeCheckoutSession(APIView):
     def post(self, request, *args, **kwargs):
-        data_dict = dict(request.data)
-        price = data_dict['price'][0]
+        data_dict = dict(request.data) #Take Site and booking info and create a sitebooking object
+        print(data_dict)
+        price = data_dict['price'][0] #Filter through object to send info with pricing etc to stripe
         product_name = data_dict['product_name'][0]
         try:
+
             checkout_session = stripe.checkout.Session.create(
                 
             line_items =[{
