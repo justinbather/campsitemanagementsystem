@@ -191,7 +191,7 @@ const CampSelect = () => {
               <div className="h-3/5 mx-10">
                 <section className="flex justify-between">
                   <h3 className="font-bold">Filter</h3>
-                  <div className="flex gap-2 hover:bg-gray-100 rounded-full p-1">
+                  <div className="flex gap-2 hover:bg-gray-100 rounded-full p-1 transition">
                     <img
                       src={reset_icon}
                       className="w-[25px] cursor-pointer"
