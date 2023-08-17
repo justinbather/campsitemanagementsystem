@@ -73,6 +73,9 @@ class SiteBooking(models.Model):
     
     def total_cost(self):
         return (self.site_id.price * (self.end_date - self.start_date).days)
+    
+   
+
 
 
     def __str__(self):

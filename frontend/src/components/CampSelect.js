@@ -14,6 +14,7 @@ import plus_icon from "../assets/plus_icon.svg";
 import minus_icon from "../assets/minus_icon.svg";
 import SiteList from "./SiteList";
 import ImageDisplay from "./ImageDisplay";
+import Checkout from "./Checkout";
 
 const siteTypeOptions = [
   { label: "Back in", value: "backin" },
@@ -38,6 +39,7 @@ const CampSelect = () => {
   const [siteType, setSiteType] = useState(null);
   const [availableSites, setAvailableSites] = useState([]);
   const [rawAvailableSites, setRawAvailableSites] = useState([]);
+  const [selectedSite, setSelectedSite] = useState([])
 
   //Fetch from api when filter dates changes
   //Parses arrivalDate and departureDate to yyyy/mm/dd format
@@ -128,6 +130,10 @@ const CampSelect = () => {
     setSiteType(initialSiteType);
     setCheckedAmenities(initialCheckedAmenities);
   };
+
+  const pullSelectedSite = (site) => {
+    setSelectedSite(site);
+  }
 
   useEffect(() => {
     fetchAvailableSites(arrivalDate, departureDate);
@@ -281,7 +287,7 @@ const CampSelect = () => {
                 </div>
               </div>
               <div className="border-2 border-stroke-color h-1/2 mb-20 rounded-br-[40px] overflow-hidden flex flex-col">
-                <SiteList sites={filteredSites} />
+                <SiteList sites={filteredSites} func={pullSelectedSite}/>
                 <div className="flex justify-center py-4 bg-blue-primary hover:bg-blue-primary/75 transition cursor-pointer">
                   <h1 className="font-bold">Confirm</h1>
                 </div>
@@ -289,6 +295,7 @@ const CampSelect = () => {
             </div>
           </div>
         </div>
+      <Checkout site={selectedSite} checkInDate={arrivalDate} checkoutDate={departureDate}/>
       </div>
     </LocalizationProvider>
   );
