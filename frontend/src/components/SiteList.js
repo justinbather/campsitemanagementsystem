@@ -20,7 +20,6 @@ const SiteList = (props) => {
             }`}
             onClick={() => {
               props.onSiteClick(site.id);
-              handleSiteClick(site);
               handleSiteClick(site.id);
             }}
           >

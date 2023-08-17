@@ -38,7 +38,6 @@ const CampSelect = () => {
   const [siteType, setSiteType] = useState(null);
   const [availableSites, setAvailableSites] = useState([]);
   const [rawAvailableSites, setRawAvailableSites] = useState([]);
-  const [selectedSite, setSelectedSite] = useState([])
   const [selectedSiteId, setSelectedSiteId] = useState(null);
 
   //Fetch from api when filter dates changes
