@@ -5,8 +5,6 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const ImageDisplay = (props) => {
   const [images, setImages] = useState([]);
-  const [fetchedSiteIds, setFetchedSiteIds] = useState(new Set());
-  console.log(props.selectedSite);
 
   const fetchImages = (siteId) => {
     axios
