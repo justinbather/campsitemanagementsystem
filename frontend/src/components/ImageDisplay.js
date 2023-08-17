@@ -5,29 +5,23 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const ImageDisplay = (props) => {
   const [images, setImages] = useState([]);
-  const [fetchedSiteIds, setFetchedSiteIds] = useState(new Set());
 
   const fetchImages = (siteId) => {
-    if (!fetchedSiteIds.has(siteId)) {
-      axios
-        .get(`/siteimage/${siteId}`)
-        .then((res) => {
-          setImages((prevImages) => [...prevImages, ...res.data]);
-          setFetchedSiteIds((prevIds) => new Set(prevIds).add(siteId));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    axios
+      .get(`/siteimage/${siteId}`)
+      .then((res) => {
+        setImages(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
-    props.sites.forEach((site) => {
-      if (!fetchedSiteIds.has(site.id)) {
-        fetchImages(site.id);
-      }
-    });
-  }, [props.sites]);
+    if (props.selectedSite) {
+      fetchImages(props.selectedSite);
+    }
+  }, [props.selectedSite]);
 
   return (
     <div>

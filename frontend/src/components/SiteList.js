@@ -18,7 +18,10 @@ const SiteList = (props) => {
             className={`border-b-2 border-stroke-color p-4 justify-between flex transition hover:bg-gray-100 cursor-pointer ${
               selectedSite.id === site.id ? "bg-gray-100" : ""
             }`}
-            onClick={() => handleSiteClick(site)}
+            onClick={() => {
+              props.onSiteClick(site.id);
+              handleSiteClick(site);
+            }}
           >
             <h2 className="font-bold">Site {site.id}</h2>
             <h1 className="font-bold">${site.price}</h1>
