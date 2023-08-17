@@ -6,14 +6,14 @@ import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import axios from "axios";
 
-import link_icon from "../assets/link_icon.svg";
-import tent_icon from "../assets/tent.png";
-import reset_icon from "../assets/reset_icon.svg";
-import plus_icon from "../assets/plus_icon.svg";
-import minus_icon from "../assets/minus_icon.svg";
+import link_icon from "../../assets/link_icon.svg";
+import tent_icon from "../../assets/tent.png";
+import reset_icon from "../../assets/reset_icon.svg";
+import plus_icon from "../../assets/plus_icon.svg";
+import minus_icon from "../../assets/minus_icon.svg";
 import SiteList from "./SiteList";
 import ImageDisplay from "./ImageDisplay";
-import Checkout from "./Checkout";
+import Checkout from "../Payment/Checkout";
 
 const siteTypeOptions = [
   { label: "Back in", value: "backin" },
@@ -297,7 +297,11 @@ const CampSelect = () => {
             </div>
           </div>
         </div>
-      <Checkout site={selectedSite} checkInDate={arrivalDate} checkoutDate={departureDate}/>
+        <Checkout
+          site={selectedSite}
+          checkInDate={arrivalDate}
+          checkoutDate={departureDate}
+        />
       </div>
     </LocalizationProvider>
   );
