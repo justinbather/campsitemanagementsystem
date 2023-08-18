@@ -5,18 +5,25 @@ import SiteTitle from "./SiteTitle";
 import ImageDisplay from "./ImageDisplay";
 import SiteDescription from "./SiteDescription";
 
+const site = {
+  id: 2,
+  park_id: 2,
+  price: 100,
+
+}
+
 const SiteView = () => {
   return (
-    <div>
+    <div className="">
       <NavBar />
       <div className="px-80 pt-6">
         <SiteTitle
-          siteNumber="Site Name"
-          campgroundName="Camp Name"
-          city="city"
+          siteNumber={`Site ${site.id}`}
+          campgroundName="Victoria Valley"
+          city="Guelph, ON"
         />
         <ImageDisplay siteImages={placeholderImage} />
-        <SiteDescription /> // not done yet
+        <SiteDescription site={site}/>
       </div>
     </div>
   );
