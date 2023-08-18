@@ -7,29 +7,14 @@ const SiteDescription = (props) => {
     ">
       <div className="w-1/2 h-full">
       
-      <div className="">
-        <ul className="columns-2 gap-3">
-          <li className="">
-            <div className="w-[6rem] my-5 rounded-xl bg-base-100 drop-shadow-lg text-center hover:ring-2 ring-neutral-300">
-            <p>Sewage</p>
-            </div>
-            <div className="w-[6rem] my-5 rounded-xl bg-base-100 drop-shadow-lg text-center hover:ring-2 ring-neutral-300">
-            <p>Hydro</p>
-            </div>
-           
-            
-          </li>
-          <li className="w-1/2">
-            <div className="w-[6rem] my-5 rounded-xl bg-base-100 drop-shadow-lg text-center hover:ring-2 ring-neutral-300">
-            <p>Waterfront</p>
-            </div>
-            <div className="w-[6rem] my-5 rounded-xl bg-base-100 drop-shadow-lg text-center hover:ring-2 ring-neutral-300">
-            <p>WiFi</p>
-            </div>
-           
-          </li>
-        </ul>
-      </div>
+      <div className="flex justify-center gap-3">
+        <div className="w-[6rem] h-6 my-5 px-5 rounded-xl bg-base-100 drop-shadow-lg text-center hover:ring-2 ring-neutral-300">
+              <p className="text-sm text-dark">Sewage</p>
+          </div>
+          <div className="w-[6rem] h-6 my-5 px-5 rounded-xl bg-base-100 drop-shadow-lg text-center hover:ring-2 ring-neutral-300">
+            <p className="text-sm text-dark">Hydro</p>
+          </div>
+        </div>
       </div>
       <div className="flex -1/2 h-full justify-center">
         <PricingCard site={props.site}/>

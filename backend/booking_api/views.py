@@ -105,9 +105,9 @@ class SiteImageView(APIView):
 
 
 class SiteView(APIView):
-    def get(self, request, *args, **kwargs):
-        sites = Site.objects.all()
-        serializer = SiteSerializer(sites, many=True)
+    def get(self, request, site_id, *args, **kwargs):
+        site = Site.objects.get(id=site_id)
+        serializer = SiteSerializer(site, many=False)
 
         return Response(serializer.data)
     def post(self, request, *args, **kwargs):

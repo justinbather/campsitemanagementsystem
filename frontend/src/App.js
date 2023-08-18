@@ -6,6 +6,8 @@ import {
   PaymentSuccess,
   PaymentFailure,
   SiteView,
+  ParkHome
+
 } from "./components";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js/pure";
@@ -21,7 +23,8 @@ function App() {
       <Elements stripe={stripePromise}>
         <Router>
           <Routes>
-            <Route exact path="" index element={<SiteView />}></Route>
+            <Route exact path="/site/:siteId" index element={<SiteView />}></Route>
+            <Route exact path="/park" index element={<ParkHome />}></Route>
             {/* <Route exact path='bookings' index element={<CampSelect />} /> */}
             {/* <Route
               exact

@@ -4,6 +4,7 @@ import PaymentSuccess from "./Payment/PaymentSuccess";
 import PaymentFailure from "./Payment/PaymentFailure";
 import Checkout from "./Payment/Checkout";
 import SiteView from "./siteview/SiteView";
+import ParkHome from "./site-feed/ParkHome";;
 
 export {
   CampSelect,
@@ -12,4 +13,5 @@ export {
   PaymentFailure,
   PaymentSuccess,
   SiteView,
+  ParkHome
 };
