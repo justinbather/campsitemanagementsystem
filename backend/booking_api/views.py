@@ -148,52 +148,70 @@ class ParkView(APIView):
         return Response({'status':'Park Deleted'}, status=status.HTTP_200_OK)
 
 
+# Set the frontend URLs for successful and failed checkout
 FRONTEND_CHECKOUT_SUCCESS_URL = settings.CHECKOUT_SUCCESS_URL
 FRONTEND_CHECKOUT_FAILED_URL = settings.CHECKOUT_FAILED_URL
+
+# Set the Stripe API key from the settings
 stripe.api_key = settings.STRIPE_TEST
+
+# Define a class-based view for handling Stripe checkout session creation
 class StripeCheckoutSession(APIView):
     def post(self, request, *args, **kwargs):
-        data_dict = dict(request.data) #Take Site and booking info and create a sitebooking object
+        # Extract data from the incoming POST request
+        data_dict = dict(request.data)
         print(data_dict)
-        price = data_dict['price'][0] #Filter through object to send info with pricing etc to stripe
+        
+        # Extract relevant information from the data
+        price = data_dict['price'][0]
         park_id = int(data_dict["park_id"][0])
-        park_obj = Park.objects.get(id=park_id)
+        park_obj = Park.objects.get(id=park_id)  # Assuming Park model exists
         site_id = int(data_dict['site_id'][0])
-        site_obj = Site.objects.get(id=site_id)
-        start_date = data_dict['start_date'][0] 
+        site_obj = Site.objects.get(id=site_id)  # Assuming Site model exists
+        start_date = data_dict['start_date'][0]
         end_date = data_dict['end_date'][0]
-        first_name = "John"
-        last_name = "Doe"
-        email = "johndoe@hotmail.com"
-        payment_made = False
+        first_name = "John"  # Hardcoded first name for now
+        last_name = "Doe"   # Hardcoded last name for now
+        email = "johndoe@hotmail.com"  # Hardcoded email for now
+        payment_made = False  # Initial payment status
 
-        
-        booking_obj = SiteBooking.objects.create(park=park_obj, site_id=site_obj, start_date=start_date, end_date=end_date, payment_made=payment_made, first_name=first_name, last_name=last_name, email=email)
-        
-        
+        # Create a SiteBooking object with extracted information
+        booking_obj = SiteBooking.objects.create(
+            park=park_obj,
+            site_id=site_obj,
+            start_date=start_date,
+            end_date=end_date,
+            payment_made=payment_made,
+            first_name=first_name,
+            last_name=last_name,
+            email=email
+        )
+
         try:
-
+            # Create a Stripe checkout session
             checkout_session = stripe.checkout.Session.create(
-                
-            line_items =[{
-                'price_data' :{
-                'currency' : 'cad',  
-                'product_data': {
-                'name': site_id,
-                },
-                'unit_amount': price
-                },
-                'quantity' : 1
+                line_items=[{
+                    'price_data': {
+                        'currency': 'cad',
+                        'product_data': {
+                            'name': site_id,
+                        },
+                        'unit_amount': price
+                    },
+                    'quantity': 1
                 }],
-                mode= 'payment',
-                success_url= FRONTEND_CHECKOUT_SUCCESS_URL,
-                cancel_url= FRONTEND_CHECKOUT_FAILED_URL,
-                )
-            print('session created')
+                mode='payment',
+                success_url=FRONTEND_CHECKOUT_SUCCESS_URL,
+                cancel_url=FRONTEND_CHECKOUT_FAILED_URL,
+            )
+            print('Session created')
+            
+            # Redirect the user to the Stripe checkout page
             return HttpResponseRedirect(checkout_session.url)
+        
         except Exception as e:
+            # Handle exceptions by printing and returning the error
             print(e)
-
             return e
     
 class WebhookTest(APIView):
