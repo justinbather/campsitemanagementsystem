@@ -23,8 +23,8 @@ function App() {
       <Elements stripe={stripePromise}>
         <Router>
           <Routes>
-            <Route exact path="/site/:siteId" index element={<SiteView />}></Route>
-            <Route exact path="/park" index element={<ParkHome />}></Route>
+            <Route exact path="/site/:siteId/:initialArrival/:initialDeparture/" index element={<SiteView />}></Route>
+            <Route exact path="/park/:initialArrival?/:initialDeparture?/" index element={<ParkHome />}></Route>
             {/* <Route exact path='bookings' index element={<CampSelect />} /> */}
             {/* <Route
               exact

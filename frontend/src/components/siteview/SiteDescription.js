@@ -17,7 +17,7 @@ const SiteDescription = (props) => {
         </div>
       </div>
       <div className="flex -1/2 h-full justify-center">
-        <PricingCard site={props.site}/>
+        <PricingCard site={props.site} initialArrival={props.initialArrival} initialDeparture={props.initialDeparture}/>
       </div>
     </div>
   );

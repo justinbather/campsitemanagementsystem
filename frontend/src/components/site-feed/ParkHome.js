@@ -16,17 +16,23 @@ const ParkHome = () => {
 
 
     const updateArrivalDate = (arrival) => {
+
         setArrivalDate(arrival);
         
     }
     const updateDepartureDate = (departure) => {
+
         setDepartureDate(departure);
     }
 
     const updateFilteredSites = (sites) => {
         setFilteredSites(sites);
-        console.log(filteredSites)
     }
+    console.log(departureDate)
+    //console.log(arrivalDate)
+
+    
+
     if(filteredSites.length > 0) 
     {return (
         <div className="">
@@ -37,7 +43,7 @@ const ParkHome = () => {
             </div>
             <div className="flex justify-center px-40 pt-24">
               
-            <SiteResultsFeed sites={filteredSites}/>
+            <SiteResultsFeed sites={filteredSites} initialArrival={arrivalDate} initialDeparture={departureDate}/>
                 
             
             </div>

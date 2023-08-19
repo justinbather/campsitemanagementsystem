@@ -4,12 +4,17 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import GradientButton from "../ui/GradientButton";
 import CheckoutModal from "./CheckoutModal";
 import React, {useState, useEffect} from 'react';
+import { useParams } from "react-router-dom";
 
 
 
 const PricingCard = (props) => {
-    const [departureDate, setDepartureDate] = useState(dayjs())
-    const [arrivalDate, setArrivalDate] = useState(dayjs())
+    const {initialArrival} = useParams();
+    console.log(initialArrival)
+    const {initialDeparture} = useParams();
+    console.log(initialDeparture)
+    const [departureDate, setDepartureDate] = useState(dayjs(initialDeparture))
+    const [arrivalDate, setArrivalDate] = useState(dayjs(initialArrival))
 
 
     return (
@@ -24,6 +29,7 @@ const PricingCard = (props) => {
             <div className="w-1/2 px-2">
             <DatePicker 
             value={arrivalDate}
+            defaultValue={initialArrival}
             onChange={(arrivalDate) => {
               setArrivalDate(arrivalDate);
             }}/>
@@ -31,6 +37,7 @@ const PricingCard = (props) => {
             <div className="w-1/2 px-2">
             <DatePicker 
             value={departureDate}
+            defaultValue={initialDeparture}
             onChange={(departureDate) => {
               setDepartureDate(departureDate);
             }}/>

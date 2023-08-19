@@ -6,8 +6,7 @@ const CheckoutModal = (props) => {
     //Takes in Site object {site.park_id:int, site.id:int, site.price:int} checkInDate, checkoutDate
     const parsedCheckInDate = dayjs(props.checkInDate.$d).format("YYYY-MM-DD");
     const parsedCheckoutDate = dayjs(props.checkoutDate.$d).format("YYYY-MM-DD");
-    console.log(parsedCheckInDate);
-    console.log(props)
+
 
     return (
         <>

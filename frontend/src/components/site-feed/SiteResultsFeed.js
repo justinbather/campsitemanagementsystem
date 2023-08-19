@@ -1,11 +1,33 @@
 import SiteCard from "./SiteCard";
 import placeholderImage from "../../assets/campsite-image.jpg";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+
 
 const SiteResultsFeed = (props) => {
+
+    const [selectedArrival, setSelectedArrival] = useState([]);
+    const [selectedDeparture, setSelectedDeparture] = useState([]);
+
+
+
+
+    useEffect(() => {
+        setSelectedArrival(props.initialArrival)
+
+        setSelectedDeparture(props.initialDeparture)
+        console.log(props.initialDeparture)
+    }, [
+        props
+    ])
+
       const navigate = useNavigate()
         const handleClick = (siteId) => {
-                navigate(`../site/${siteId}`)
+            console.log(selectedArrival)
+            console.log(selectedDeparture)
+                navigate(`../site/${siteId}/${selectedArrival}/${selectedDeparture}`)
+
         }
       
         return (
@@ -15,7 +37,7 @@ const SiteResultsFeed = (props) => {
                 
                 <div className="flex w-[20rem] h-[20rem] bg-base-100 drop-shadow-xl justify-center overflow-hidden rounded-xl hover:ring-4 ring-neutral-300">
                 
-                <img className="w-full h-full"alt="image" src={placeholderImage} role="button" onClick={() => handleClick(site.id)} />
+                <img className="w-full h-full"alt="image" src={placeholderImage} role="button" key={site.id} onClick={() => handleClick(site.id)} />
                 <h1 className="text-lg text-center text-base-100 absolute bottom-0">Site {site.id} - ${site.price}</h1>
                
                 </div>

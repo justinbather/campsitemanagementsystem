@@ -13,6 +13,8 @@ import axios from "axios";
 
 const SiteView = () => {
   const {siteId} = useParams();
+  const {initialArrival} = useParams();
+  const {initialDeparture}= useParams();
   const [site, setSite] = useState([]);
 
 const fetchSiteData = async () => {
@@ -39,7 +41,7 @@ useEffect(() => {
           city="Guelph, ON"
         />
         <ImageDisplay siteImages={placeholderImage} />
-        <SiteDescription site={site}/>
+        <SiteDescription site={site} initialArrival={initialArrival} initialDeparture={initialDeparture}/>
       </div>
     </div>
   );
