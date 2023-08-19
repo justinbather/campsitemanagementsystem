@@ -14,26 +14,22 @@ const SiteFilter = (props) => {
 
     const parsedArrivalDate = dayjs(arrivalDate.$d).format("YYYY-MM-DD");
     const parsedDepartureDate = dayjs(departureDate.$d).format("YYYY-MM-DD");
-    console.log(parsedArrivalDate)
-    console.log(parsedDepartureDate)
 
-    const fetchFilterSites = async (parsedArrivalDate, parsedDepartureDate) => {
-        try {
-        const fetchedSiteData = await axios.get(
-            `/bookings/2/${parsedArrivalDate}/${parsedDepartureDate}`
-          );
-          const availableSites = Object.entries(fetchedSiteData);
-          setFilteredSites(availableSites[0][1])
-          props.sites(filteredSites)
-          
-
-        } catch(err) {
-            console.log(err)
-        }
+    const fetchFilteredSites = async (parsedArrivalDate, parsedDepartureDate) => {
+        
+         axios.get(`/bookings/2/${parsedArrivalDate}/${parsedDepartureDate}`)
+         .then((res) => {
+          setFilteredSites(res.data)
+          console.log(res.data)
+          props.sites(res.data)
+         })
+         .catch((err) => {
+          console.log(err)
+         });
     };
 
     useEffect(() => {
-        fetchFilterSites(parsedArrivalDate, parsedDepartureDate);
+        fetchFilteredSites(parsedArrivalDate, parsedDepartureDate);
       }, [
        
         arrivalDate,
