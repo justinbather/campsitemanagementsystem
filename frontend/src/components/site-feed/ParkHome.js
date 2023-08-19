@@ -27,8 +27,8 @@ const ParkHome = () => {
         setFilteredSites(sites);
         console.log(filteredSites)
     }
-    
-    return (
+    if(filteredSites.length > 0) 
+    {return (
         <div className="">
             
             <NavBar />
@@ -36,10 +36,29 @@ const ParkHome = () => {
             <SiteFilter arrival={updateArrivalDate} departure={updateDepartureDate} sites={updateFilteredSites} />
             </div>
             <div className="flex justify-center px-40 pt-24">
+              
             <SiteResultsFeed sites={filteredSites}/>
+                
+            
             </div>
         </div>
-    )
+    )} else {
+        return (
+            <div className="">
+            
+            <NavBar />
+            <div className="flex justify-center pt-10 gap-2">
+            <SiteFilter arrival={updateArrivalDate} departure={updateDepartureDate} sites={updateFilteredSites} />
+            </div>
+            <div className="flex justify-center px-40 pt-24">
+              
+            <h1 className="text-xl text-black">No sites available!</h1>
+                
+            
+            </div>
+        </div>
+        )
+    }
 };
 
 export default ParkHome;

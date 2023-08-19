@@ -14,6 +14,8 @@ const SiteFilter = (props) => {
 
     const parsedArrivalDate = dayjs(arrivalDate.$d).format("YYYY-MM-DD");
     const parsedDepartureDate = dayjs(departureDate.$d).format("YYYY-MM-DD");
+    console.log(parsedArrivalDate)
+    console.log(parsedDepartureDate)
 
     const fetchFilterSites = async (parsedArrivalDate, parsedDepartureDate) => {
         try {
@@ -34,8 +36,8 @@ const SiteFilter = (props) => {
         fetchFilterSites(parsedArrivalDate, parsedDepartureDate);
       }, [
        
-        parsedArrivalDate,
-        parsedDepartureDate,
+        arrivalDate,
+        departureDate,
         
       ]);
 
@@ -44,16 +46,20 @@ const SiteFilter = (props) => {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker 
             value={arrivalDate}
+            defaultValue={arrivalDate}
             onChange={(arrivalDate) => {
               setArrivalDate(arrivalDate);
               props.arrival(parsedArrivalDate)
               
+              
             }}/>
             <DatePicker 
             value={departureDate}
+            defaultValue={departureDate}
             onChange={(departureDate) => {
               setDepartureDate(departureDate);
               props.departure(parsedDepartureDate)
+              
               
             }}/>
         </LocalizationProvider>
