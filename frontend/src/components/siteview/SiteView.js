@@ -16,6 +16,7 @@ const SiteView = () => {
   const {initialArrival} = useParams();
   const {initialDeparture}= useParams();
   const [site, setSite] = useState([]);
+  const [siteImages, setSiteImages] = useState([]);
 
 const fetchSiteData = async () => {
   try {
@@ -27,8 +28,21 @@ const fetchSiteData = async () => {
     console.log(err);
   }
 }
+
+const fetchSiteImages = async () => {
+  axios.get(`../../../siteimage/${siteId}`)
+  .then((res) => {
+    setSiteImages(res.data)
+    console.log(siteImages)
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+}
+
 useEffect(() => {
   fetchSiteData();
+  fetchSiteImages();
 }, []);
 
   return (
@@ -40,7 +54,8 @@ useEffect(() => {
           campgroundName="Victoria Valley"
           city="Guelph, ON"
         />
-        <ImageDisplay siteImages={placeholderImage} />
+
+        {siteImages ? <ImageDisplay siteImages={siteImages} /> : "Loading"}
         <SiteDescription site={site} initialArrival={initialArrival} initialDeparture={initialDeparture}/>
       </div>
     </div>
