@@ -7,46 +7,39 @@ import SiteDescription from "./SiteDescription";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-
-
-
-
 const SiteView = () => {
-  const {siteId} = useParams();
-  const {initialArrival} = useParams();
-  const {initialDeparture}= useParams();
+  const { siteId } = useParams();
+  const { initialArrival } = useParams();
+  const { initialDeparture } = useParams();
   const [site, setSite] = useState([]);
   const [siteImages, setSiteImages] = useState([]);
 
+  const fetchSiteData = async () => {
+    try {
+      const siteData = await axios.get(`/site/${siteId}`);
+      console.log(siteData);
+      setSite(siteData.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-const fetchSiteData = async () => {
-  try {
-    
-    const siteData = await axios.get(`/site/${siteId}`)
-    console.log(siteData)
-    setSite(siteData.data)
-  } catch(err) {
-    console.log(err);
-  }
-}
+  const fetchSiteImages = async () => {
+    axios
+      .get(`/siteimage/${siteId}`)
+      .then((res) => {
+        setSiteImages(res.data);
+        console.log(siteImages);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-
-
-const fetchSiteImages = async () => {
-  axios.get(`../../../siteimage/${siteId}`)
-  .then((res) => {
-    setSiteImages(res.data)
-    console.log(siteImages)
-  })
-  .catch((err) => {
-    console.log(err)
-  })
-}
-
-useEffect(() => {
-  fetchSiteData();
-  fetchSiteImages();
-}, []);
+  useEffect(() => {
+    fetchSiteData();
+    fetchSiteImages();
+  }, []);
 
   return (
     <div className="">
@@ -59,7 +52,11 @@ useEffect(() => {
         />
 
         <ImageDisplay siteImages={siteImages} thumbnail={site.thumbnail} />
-        <SiteDescription site={site} initialArrival={initialArrival} initialDeparture={initialDeparture}/>
+        <SiteDescription
+          site={site}
+          initialArrival={initialArrival}
+          initialDeparture={initialDeparture}
+        />
       </div>
     </div>
   );
