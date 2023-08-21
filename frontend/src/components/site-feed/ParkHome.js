@@ -41,10 +41,12 @@ const ParkHome = () => {
             <div className="flex justify-center pt-10 gap-2">
             <SiteFilter arrival={updateArrivalDate} departure={updateDepartureDate} sites={updateFilteredSites} />
             </div>
-            <div className="flex justify-center px-40 pt-24">
-              
+            <div className="flex pt-24 overflow-x-scroll hide-scroll-bar">
+            
+              <div className="flex flex-nowrap ml-20">
+              <h1 className="absolute left-60 text-center font-inter text-4xl font-bold">Top Sites For You</h1>
             <SiteResultsFeed sites={filteredSites} initialArrival={arrivalDate} initialDeparture={departureDate}/>
-                
+            </div>
             
             </div>
         </div>

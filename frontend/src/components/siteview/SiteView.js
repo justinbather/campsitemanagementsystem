@@ -18,6 +18,7 @@ const SiteView = () => {
   const [site, setSite] = useState([]);
   const [siteImages, setSiteImages] = useState([]);
 
+
 const fetchSiteData = async () => {
   try {
     
@@ -28,6 +29,8 @@ const fetchSiteData = async () => {
     console.log(err);
   }
 }
+
+
 
 const fetchSiteImages = async () => {
   axios.get(`../../../siteimage/${siteId}`)
@@ -55,7 +58,7 @@ useEffect(() => {
           city="Guelph, ON"
         />
 
-        {siteImages ? <ImageDisplay siteImages={siteImages} /> : "Loading"}
+        <ImageDisplay siteImages={siteImages} thumbnail={site.thumbnail} />
         <SiteDescription site={site} initialArrival={initialArrival} initialDeparture={initialDeparture}/>
       </div>
     </div>

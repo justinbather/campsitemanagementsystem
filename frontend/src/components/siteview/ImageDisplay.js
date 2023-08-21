@@ -12,7 +12,7 @@ const ImageDisplay = (props) => {
 
 
   useEffect(() => {
-    setImageArray(props.siteImages)
+    props.siteImages.length > 4 ? setImageArray(props.siteImages.slice(0,5)) : setImageArray(props.siteImages)
     
   }, [
     props
@@ -26,14 +26,14 @@ const ImageDisplay = (props) => {
         {imageArray.length > 0 &&
         <>
           <div className="w-full h-full">
-          <img alt="image" src={imageArray[0].photo} />
+          <img alt="image" src={props.thumbnail} />
         </div>
         <div>
           <div className="sm:gap-1 grid grid-cols-2 max-h-[30vh] justify-center">
           <img alt="image" src={imageArray[0].photo} />
-          <img alt="image" src={imageArray[0].photo} />
-          <img alt="image" src={imageArray[0].photo} />
-          <img alt="image" src={imageArray[0].photo} />
+          <img alt="image" src={imageArray[1].photo} />
+          <img alt="image" src={imageArray[2].photo} />
+          <img alt="image" src={imageArray[3].photo} />
           </div>
         </div>
         </>
