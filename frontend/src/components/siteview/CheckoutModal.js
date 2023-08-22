@@ -69,6 +69,7 @@ const CheckoutModal = (props) => {
 
           <input type="hidden" name="product_name" value="test_product" />
           <input type="hidden" name="price" value={props.site.price * 100} />
+          <input type="hidden" name="nights" value={props.nights} />
 
           <p className="py-4">Press ESC key or click on ✕ button to close</p>
           <button
