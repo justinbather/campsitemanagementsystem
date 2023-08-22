@@ -36,7 +36,11 @@ class Park(models.Model):
         return self.name
     
 
-from PIL import Image
+class Amenities(models.Model):
+    name = models.CharField(max_length=15)
+
+    def __str__(self):
+        return self.name
 
 class Site(models.Model):
     PULL_THROUGH = "Pull Through"
@@ -52,9 +56,7 @@ class Site(models.Model):
     park_id = models.ForeignKey(Park, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     site_type = models.CharField(choices=SITE_TYPES, max_length=30)
-    electricity = models.BooleanField(default=False)
-    water = models.BooleanField(default=False)
-    sewage = models.BooleanField(default=False)
+    amenities = models.ManyToManyField(Amenities, related_name="Site")
     thumbnail = models.ImageField(upload_to="./assets/thumbnails", validators=[image_validator])
 
 

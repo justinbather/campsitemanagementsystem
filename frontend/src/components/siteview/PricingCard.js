@@ -13,6 +13,8 @@ const PricingCard = (props) => {
   const [departureDate, setDepartureDate] = useState(dayjs(initialDeparture));
   const [arrivalDate, setArrivalDate] = useState(dayjs(initialArrival));
 
+
+
   const displayNights = (arrivalDate, departureDate) => {
     const date1String = dayjs(arrivalDate.$d).format("YYYY-MM-DD").toString();
     const dayjsDate1 = dayjs(date1String);
@@ -24,6 +26,10 @@ const PricingCard = (props) => {
   };
 
   const [numberOfNights, setNumberOfNights] = useState("Select dates");
+
+  useEffect(() => {
+   setNumberOfNights(displayNights(arrivalDate, departureDate))
+  },[arrivalDate, departureDate])
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

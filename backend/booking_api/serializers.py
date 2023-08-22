@@ -11,11 +11,19 @@ class ParkSerializer(serializers.ModelSerializer):
         model = Park
         fields = ('id', 'name', 'address', 'postal_code', 'owner')
 
+class AmenitiesSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Amenities
+        fields = ('__all__')
+
 class SiteSerializer(serializers.ModelSerializer):
+
+    amenities = AmenitiesSerializer(many=True, read_only=True)
 
     class Meta:
         model = Site
-        fields = ('__all__')
+        fields = ('id', 'name', 'park_id', 'amenities', 'price', 'thumbnail')
 
 class SiteBookingSerializer(serializers.ModelSerializer):
 
