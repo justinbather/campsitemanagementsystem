@@ -50,4 +50,6 @@ class SiteAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Park)
+admin.site.register(Amenities)
+
 

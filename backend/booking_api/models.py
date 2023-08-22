@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
-
+from django_resized import ResizedImageField
 
 
 from .managers import CustomUserManager
+from .validators import image_validator
 
 # Create your models here.
 
@@ -35,7 +36,11 @@ class Park(models.Model):
         return self.name
     
 
-from PIL import Image
+class Amenities(models.Model):
+    name = models.CharField(max_length=15)
+
+    def __str__(self):
+        return self.name
 
 class Site(models.Model):
     PULL_THROUGH = "Pull Through"
@@ -51,9 +56,8 @@ class Site(models.Model):
     park_id = models.ForeignKey(Park, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     site_type = models.CharField(choices=SITE_TYPES, max_length=30)
-    electricity = models.BooleanField(default=False)
-    water = models.BooleanField(default=False)
-    sewage = models.BooleanField(default=False)
+    amenities = models.ManyToManyField(Amenities, related_name="Site")
+    thumbnail = models.ImageField(upload_to="./assets/thumbnails", validators=[image_validator])
 
 
 
@@ -85,14 +89,8 @@ class SiteBooking(models.Model):
 
 class SiteImage(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to="./assets/site-images")
+    photo = models.ImageField(upload_to="./assets/site-images", validators=[image_validator])
     description = models.CharField(max_length=50)
 
-    
-
-    def save(self, *args, **kwargs):
-        super(SiteImage, self).save(*args, **kwargs)
-        img = Image.open(self.photo.path)
-        if img.height > 1125 or img.width > 1125:
-            img.thumbnail((1125,1125))
-        img.save(self.photo.path,quality=70,optimize=True)
+    def __str__(self) -> str:
+        return self.description
