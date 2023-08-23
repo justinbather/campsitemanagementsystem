@@ -1,24 +1,40 @@
 import React, { useEffect, useState } from "react";
-import placeholderImage from "../../assets/campsite-image.jpg";
+import axios from "axios";
 
 const ImageDisplay = (props) => {
   //Limit images to 4 so we can nicely put into grid
-  //let imageArray = []
-  //props.siteImages.length > 4 ? imageArray = props.siteImages.slice(0, 4) : imageArray = props.siteImages
+  //let siteImages = []
+  //props.siteImages.length > 4 ? siteImages = props.siteImages.slice(0, 4) : siteImages = props.siteImages
+  console.log(props);
+  const [siteImages, setSiteImages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const [imageArray, setImageArray] = useState([]);
+  const fetchSiteImages = async () => {
+    axios
+      .get(`/siteimage/${props.siteId}`)
+      .then((res) => {
+        setSiteImages(res.data);
+        setLoading(false);
+        console.log(siteImages);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
-    props.siteImages.length > 4
-      ? setImageArray(props.siteImages.slice(0, 5))
-      : setImageArray(props.siteImages);
+    fetchSiteImages();
+    siteImages.length > 4
+      ? setSiteImages(siteImages.slice(0, 5))
+      : setSiteImages(siteImages);
   }, [props]);
 
-  console.log(props.siteImages);
+  console.log(siteImages);
+
   return (
     <div className="pt-4">
       <div className="w-full rounded-xl relative grid grid-cols-2 sm:gap-1 overflow-hidden max-h-[50vh]">
-        {imageArray.length > 0 && (
+        {siteImages.length > 0 && (
           <>
             <div className="w-full h-full">
               <img
@@ -29,7 +45,7 @@ const ImageDisplay = (props) => {
             </div>
             <div className="flex">
               <div className="sm:gap-1 grid grid-cols-2 justify-center">
-                {imageArray.map((image, index) => (
+                {siteImages.map((image, index) => (
                   <img
                     key={index}
                     alt="image"
