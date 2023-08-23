@@ -6,6 +6,7 @@ import CheckoutModal from "./CheckoutModal";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { HiArrowRight } from "react-icons/hi";
+import DatesPicker from "../ui/DatesPicker";
 
 const PricingCard = (props) => {
   const { initialArrival } = useParams();
@@ -63,7 +64,7 @@ const PricingCard = (props) => {
           <h1 className="text-xl text-[#fd4b31] pt-3 pl-5">
             ${props.site.price}/night
           </h1>
-          <p className="text-sm pl-5 pt-2">
+          <p className="text-sm pl-5">
             {numberOfNights === 0
               ? "Select dates"
               : numberOfNights > 1
@@ -72,28 +73,15 @@ const PricingCard = (props) => {
           </p>
         </div>
 
-        <div className="flex flex-row">
-          <div className="p-2 flex gap-2 items-center justify-center">
-            <DatePicker
-              value={arrivalDate}
-              defaultValue={initialArrival}
-              onChange={(arrivalDate, departureDate) => {
-                setArrivalDate(arrivalDate);
-                setNumberOfNights(calcNights(arrivalDate, departureDate));
-              }}
-            />
-            <HiArrowRight />
-            <DatePicker
-              value={departureDate}
-              defaultValue={initialDeparture}
-              onChange={(departureDate) => {
-                setDepartureDate(departureDate);
-                setNumberOfNights(calcNights(arrivalDate, departureDate));
-              }}
-            />
-          </div>
+        <div className="flex flex-row pt-4">
+          <DatesPicker
+            arrivalDate={arrivalDate}
+            departureDate={departureDate}
+            setArrivalDate={setArrivalDate}
+            setDepartureDate={setDepartureDate}
+          />
         </div>
-        <div className="w-full flex flex-row py-4">
+        <div className="w-full flex flex-row">
           <div className="w-1/2 flex-col text-left justify-start pl-5">
             <h3 className="text-neutral-500">
               ${props.site.price} x {numberOfNights} nights
