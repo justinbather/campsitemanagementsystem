@@ -8,10 +8,12 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const SiteView = () => {
+  const{ parkId } = useParams();
   const { siteId } = useParams();
   const { initialArrival } = useParams();
   const { initialDeparture } = useParams();
   const [site, setSite] = useState([]);
+
 
   const fetchSiteData = async () => {
     try {
@@ -29,7 +31,7 @@ const SiteView = () => {
 
   return (
     <div className="">
-      <NavBar />
+      <NavBar showButton={true} buttonText="Back to search" clickDestination={`/park/${parkId}`}/>
       <div className="px-80 pt-6">
         <SiteTitle
           siteNumber={`Site ${site.id}`}

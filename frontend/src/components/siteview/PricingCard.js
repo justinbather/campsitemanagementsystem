@@ -44,7 +44,7 @@ const PricingCard = (props) => {
   };
 
   const calcTotal = (netCost, taxes) => {
-    const total = Math.ceil(netCost + taxes);
+    const total = Math.ceil(netCost + taxes + serviceFee);
     return total;
   };
 

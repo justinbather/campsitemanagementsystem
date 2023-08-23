@@ -9,7 +9,7 @@ const GradientButton = (props) => {
     if (props.onClick) {
       props.onClick();
     } else {
-      navigate("/park");
+      navigate(props.clickDestination);
     }
   };
 

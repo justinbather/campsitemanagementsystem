@@ -9,7 +9,7 @@ class ParkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Park
-        fields = ('id', 'name', 'address', 'postal_code', 'owner')
+        fields = ('__all__')
 
 class AmenitiesSerializer(serializers.ModelSerializer):
 

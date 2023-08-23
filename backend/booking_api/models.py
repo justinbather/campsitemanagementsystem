@@ -5,7 +5,7 @@ from django_resized import ResizedImageField
 
 
 from .managers import CustomUserManager
-from .validators import image_validator
+from .validators import image_validator, logo_validator
 
 # Create your models here.
 
@@ -28,9 +28,12 @@ class User(AbstractUser):
 
 class Park(models.Model):
     name = models.CharField(unique=True, max_length=40)
-    address = models.CharField(unique=True, max_length=50)
+    address = models.CharField(max_length=50)
+    city = models.CharField(max_length=30)
+    province = models.CharField(max_length=30)
     postal_code = models.CharField(max_length=6)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    logo = models.ImageField(upload_to="./assets/park/logo", validators=[logo_validator])
 
     def __str__(self):
         return self.name
