@@ -125,9 +125,9 @@ class SiteView(APIView):
     
 class ParkView(APIView):
     
-    def get(self, request, *args, **kwargs):
-        parks = Park.objects.all()
-        serializer = ParkSerializer(parks, many=True)
+    def get(self, request, park_id, *args, **kwargs):
+        park = Park.objects.get(id=park_id)
+        serializer = ParkSerializer(park, many=False)
 
         return Response(serializer.data)
     

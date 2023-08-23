@@ -3,12 +3,30 @@ import NavBar from "../ui/NavBar";
 import SiteFilter from "./SiteFilter";
 import SiteResultsFeed from "./SiteResultsFeed";
 import { arrayIncludes } from "@mui/x-date-pickers/internals/utils/utils";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const ParkHome = () => {
+  const [parkData, setParkData] = useState([]);
   const [arrivalDate, setArrivalDate] = useState([]);
   const [departureDate, setDepartureDate] = useState([]);
   const [rawAvailableSites, setRawAvailableSites] = useState([]);
   const [filteredSites, setFilteredSites] = useState([]);
+
+  const {parkId} = useParams();
+  console.log(parkId)
+
+  const fetchParkData = async () => {
+    axios
+    .get(`/park/${parkId}`)
+    .then((res) => {
+        setParkData(res.data)
+        console.log(parkData)
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+  }
 
   const updateArrivalDate = (arrival) => {
     setArrivalDate(arrival);
@@ -20,13 +38,16 @@ const ParkHome = () => {
   const updateFilteredSites = (sites) => {
     setFilteredSites(sites);
   };
-  console.log(departureDate);
-  //console.log(arrivalDate)
+ 
+
+  useEffect(() => {
+    fetchParkData();
+  }, [parkId])
 
   if (filteredSites.length > 0) {
     return (
       <div className="">
-        <NavBar />
+        <NavBar showTitle={true} titleText={parkData.name} titleImg={parkData.logo} />
         <div className="flex justify-center pt-10 gap-2">
           <SiteFilter
             arrival={updateArrivalDate}

@@ -3,10 +3,12 @@ import placeholderImage from "../../assets/campsite-image.jpg";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const SiteResultsFeed = (props) => {
-  const [selectedArrival, setSelectedArrival] = useState([]);
-  const [selectedDeparture, setSelectedDeparture] = useState([]);
+    const [selectedArrival, setSelectedArrival] = useState([]);
+    const [selectedDeparture, setSelectedDeparture] = useState([]);
+    const {parkId} = useParams();
 
   useEffect(() => {
     setSelectedArrival(props.initialArrival);
@@ -17,9 +19,8 @@ const SiteResultsFeed = (props) => {
 
   const navigate = useNavigate();
   const handleClick = (siteId) => {
-    console.log(selectedArrival);
-    console.log(selectedDeparture);
-    navigate(`../site/${siteId}/${selectedArrival}/${selectedDeparture}`);
+
+    navigate(`/park/${parkId}/site/${siteId}/${selectedArrival}/${selectedDeparture}`);
   };
 
   return (
