@@ -21,7 +21,6 @@ const ParkHome = () => {
       .get(`/park/${parkId}`)
       .then((res) => {
         setParkData(res.data);
-        console.log(parkData);
       })
       .catch((error) => {
         console.log(error);

@@ -8,7 +8,7 @@ import axios from "axios";
 import PricingCard from "./PricingCard";
 import SiteViewSkeleton from "./ImageDisplaySkeleton";
 
-const SiteView = () => {
+const SiteView = (props) => {
   const { parkId } = useParams();
   const { siteId } = useParams();
   const { initialArrival } = useParams();
@@ -16,37 +16,47 @@ const SiteView = () => {
   const [site, setSite] = useState([]);
   const [loading, setLoading] = useState(true);
   const [siteImages, setSiteImages] = useState([]);
+  const [campData, setCampData] = useState([]);
 
-  const fetchSiteData = async () => {
+  const fetchSiteData = () => {
     setLoading(true);
-    setTimeout(async () => {
-      try {
-        const siteData = await axios.get(`/site/${siteId}`);
-        console.log(siteData);
-        setSite(siteData.data);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
+    setTimeout(() => {
+      axios
+        .get(`/site/${siteId}`)
+        .then((siteData) => {
+          console.log(siteData);
+          setSite(siteData.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      axios
+        .get(`/siteimage/${siteId}`)
+        .then((siteImageData) => {
+          setSiteImages(siteImageData.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+
+      axios
+        .get(`/park/${parkId}`)
+        .then((res) => {
+          setCampData(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }, 2000);
   };
 
-  const fetchSiteImages = async () => {
-    axios
-      .get(`/siteimage/${siteId}`)
-      .then((res) => {
-        setSiteImages(res.data);
-        console.log(siteImages);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   useEffect(() => {
-    fetchSiteImages();
     fetchSiteData();
+    console.log(campData);
   }, []);
 
   return (
@@ -56,15 +66,15 @@ const SiteView = () => {
         buttonText="Back to search"
         clickDestination={`/park/${parkId}`}
       />
-      <div className="px-80 pt-6">
+      <div className="px-40 xl:px-80 pt-6">
         {loading ? (
           <SiteViewSkeleton />
         ) : (
           <>
             <SiteTitle
               siteNumber={`Site ${site.id}`}
-              campgroundName="Victoria Valley"
-              city="Guelph, ON"
+              campgroundName={campData.name}
+              city={`${campData.city}, ${campData.province}`}
             />
             <ImageDisplay
               siteImages={siteImages}

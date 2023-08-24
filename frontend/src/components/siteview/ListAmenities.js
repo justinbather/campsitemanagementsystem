@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
 
+const amenitiesIcons = {
+  water: "frontendsrcassetswater-icon.svg",
+  sewage: "frontendsrcassetssewage-icon.svg",
+  waterfront: "frontendsrcassetswaterfront-icon.svg",
+  electricity: "frontendsrcassetselectricity-icon.svg",
+};
+
 const ListAmenities = (props) => {
   /* Takes in site : {
        ...site,

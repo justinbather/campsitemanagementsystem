@@ -4,7 +4,7 @@ const SiteViewSkeleton = () => {
   return (
     <div>
       <div className="w-[50px] h-[25px] mb-4 bg-neutral-300 rounded-md"></div>
-      <div className="w-[200px] h-[25px] mb-4 bg-neutral-200 rounded-md"></div>
+      <div className="w-[400px] h-[25px] mb-4 bg-neutral-200 rounded-md"></div>
       <div className="w-full rounded-xl relative grid grid-cols-2 gap-3 overflow-hidden h-[50vh]">
         <div className="w-full h-full bg-neutral-300 animate-pulse"></div>
         <div className="w-full h-full grid grid-cols-2 gap-2">
