@@ -41,5 +41,9 @@ class SiteImageSerializer(serializers.ModelSerializer):
         model = SiteImage
         fields = ('__all__')
 
+class UnavailableDatesSerializer(serializers.Serializer):
+    dates = serializers.ListField(child=serializers.DateField(format='%Y-%m-%d')) #Serializer a list of datefields in correct format
+
+
 
 

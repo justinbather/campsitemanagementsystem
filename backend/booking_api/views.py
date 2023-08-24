@@ -8,8 +8,10 @@ from rest_framework.decorators import action
 from rest_framework import status
 from django.conf import settings
 import stripe
+import pandas as pd
+from datetime import timedelta
 
-from .serializers import ParkSerializer, SiteBookingSerializer, SiteSerializer, CreateSiteBookingSerializer, SiteImageSerializer
+from .serializers import ParkSerializer, SiteBookingSerializer, SiteSerializer, CreateSiteBookingSerializer, SiteImageSerializer, UnavailableDatesSerializer
 
 from .models import *
 
@@ -122,6 +124,36 @@ class SiteView(APIView):
         obj = Site.objects.get(id=site_id)
         obj.delete()
         return Response({'status':'Site Deleted'})
+    
+class UnavailableDatesView(APIView):
+    """
+    Takes in site_id:int and current_date:str from url params
+
+    returns list:str dates of current sitebookings for given site in YYYY-MM-DD
+
+    for each site booking
+    pandas.date_range(sdate,edate-timedelta(days=1),freq='d')
+    append this to a list
+    return serialized data
+    """
+    def get(self, request, site_id, current_date, *args, **kwargs):
+        
+        try:
+            site = Site.objects.get(id=site_id)
+        except Site.DoesNotExist:
+            return Response({'status': 'Tried to access unavailable booking dates from a site that doesnt exist'}, status=status.HTTP_400_BAD_REQUEST)
+        bookings = SiteBooking.objects.filter(site_id=site, start_date__gte=current_date).filter(site_id=site, end_date__gte=current_date).order_by("start_date")
+            #Chaining Filter so we provide an OR statement incase there is a booking with a start date from 3 days ago, but end date is in 2 days from current.
+        date_list = []
+        if bookings:
+            for booking in bookings:
+                unavailable_dates = pd.date_range(booking.start_date,booking.end_date-timedelta(days=0),freq='d')
+                date_list.extend(unavailable_dates.strftime('%Y-%m-%d')) # Formats date and appends to end of date_list
+        serializer = UnavailableDatesSerializer({'dates': date_list})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+
+        
     
 class ParkView(APIView):
     
