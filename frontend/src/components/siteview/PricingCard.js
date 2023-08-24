@@ -90,7 +90,7 @@ const PricingCard = (props) => {
             <h3 className="text-neutral-500">Taxes</h3>
           </div>
 
-          <div className="w-1/2 flex-col text-right justify-end pr-5">
+          <div className="w-1/2 flex-col text-right justify-end pr-5 pb-2">
             <h3 className="text-neutral-500">${netCost} CAD</h3>
             <h3 className="text-neutral-500">${serviceFee} CAD</h3>
             <h3 className="text-neutral-500">${taxes} CAD</h3>

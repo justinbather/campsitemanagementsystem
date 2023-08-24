@@ -5,7 +5,6 @@ import { HiArrowRight } from "react-icons/hi";
 
 const DatesPicker = (props) => {
   const [error, setError] = useState(null);
-  console.log(props);
 
   return (
     <div>

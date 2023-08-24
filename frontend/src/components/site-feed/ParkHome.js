@@ -41,6 +41,7 @@ const ParkHome = () => {
 
   useEffect(() => {
     fetchParkData();
+    console.log(parkData);
   }, [parkId]);
 
   if (filteredSites.length > 0) {

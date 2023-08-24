@@ -6,21 +6,21 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const SiteResultsFeed = (props) => {
-    const [selectedArrival, setSelectedArrival] = useState([]);
-    const [selectedDeparture, setSelectedDeparture] = useState([]);
-    const {parkId} = useParams();
+  const [selectedArrival, setSelectedArrival] = useState([]);
+  const [selectedDeparture, setSelectedDeparture] = useState([]);
+  const { parkId } = useParams();
 
   useEffect(() => {
     setSelectedArrival(props.initialArrival);
 
     setSelectedDeparture(props.initialDeparture);
-    console.log(props.initialDeparture);
   }, [props]);
 
   const navigate = useNavigate();
   const handleClick = (siteId) => {
-
-    navigate(`/park/${parkId}/site/${siteId}/${selectedArrival}/${selectedDeparture}`);
+    navigate(
+      `/park/${parkId}/site/${siteId}/${selectedArrival}/${selectedDeparture}`
+    );
   };
 
   return (

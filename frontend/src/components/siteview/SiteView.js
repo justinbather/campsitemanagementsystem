@@ -6,14 +6,14 @@ import ImageDisplay from "./ImageDisplay";
 import SiteDescription from "./SiteDescription";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import PricingCard from "./PricingCard";
 
 const SiteView = () => {
-  const{ parkId } = useParams();
+  const { parkId } = useParams();
   const { siteId } = useParams();
   const { initialArrival } = useParams();
   const { initialDeparture } = useParams();
   const [site, setSite] = useState([]);
-
 
   const fetchSiteData = async () => {
     try {
@@ -27,11 +27,16 @@ const SiteView = () => {
 
   useEffect(() => {
     fetchSiteData();
+    console.log(site);
   }, []);
 
   return (
     <div className="">
-      <NavBar showButton={true} buttonText="Back to search" clickDestination={`/park/${parkId}`}/>
+      <NavBar
+        showButton={true}
+        buttonText="Back to search"
+        clickDestination={`/park/${parkId}`}
+      />
       <div className="px-80 pt-6">
         <SiteTitle
           siteNumber={`Site ${site.id}`}
@@ -39,11 +44,14 @@ const SiteView = () => {
           city="Guelph, ON"
         />
         <ImageDisplay siteId={siteId} thumbnail={site.thumbnail} />
-        <SiteDescription
-          site={site}
-          initialArrival={initialArrival}
-          initialDeparture={initialDeparture}
-        />
+        <div className="flex mt-10 gap-10">
+          <SiteDescription siteAmenities={site} />
+          <PricingCard
+            site={site}
+            initialArrival={initialArrival}
+            initialDeparture={initialDeparture}
+          />
+        </div>
       </div>
     </div>
   );
