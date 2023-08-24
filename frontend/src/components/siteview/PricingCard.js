@@ -50,12 +50,18 @@ const PricingCard = (props) => {
   };
 
   useEffect(() => {
-    setNumberOfNights(calcNights(arrivalDate, departureDate));
-    setNetCost(calcNetCost(numberOfNights, props.site.price)); //showing $0 or Nan on load
-    setServiceFee(calcServiceFee(netCost)); //showing $0 or Nan on load
-    setTaxes(calcTaxes(netCost, serviceFee)); //showing $0 or Nan on load
-    setTotal(calcTotal(netCost, taxes)); //showing $0 or Nan on load
-  }, [arrivalDate, departureDate, props, netCost, serviceFee, taxes, total]); //adding these dependencies fixed the refresh delay but onload shows 0 or NaN
+    const nights = calcNights(arrivalDate, departureDate);
+    const netCost = calcNetCost(nights, props.site.price);
+    const serviceFee = calcServiceFee(netCost);
+    const taxes = calcTaxes(netCost, serviceFee);
+    const total = calcTotal(netCost, taxes);
+
+    setNumberOfNights(nights);
+    setNetCost(netCost);
+    setServiceFee(serviceFee);
+    setTaxes(taxes);
+    setTotal(total);
+  }, [arrivalDate, departureDate, props.site.price]); //adding these dependencies fixed the refresh delay but onload shows 0 or NaN
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

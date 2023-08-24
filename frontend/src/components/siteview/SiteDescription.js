@@ -7,7 +7,7 @@ const SiteDescription = (props) => {
     <div className="flex justify-between w-full border">
       <div className="flex flex-row justify-between h-full">
         <div className="flex justify-center gap-3">
-          <ListAmenities amenities={props.siteAmenities.amenities} />
+          <ListAmenities amenities={props.siteAmenities} />
         </div>
       </div>
       <div></div>
