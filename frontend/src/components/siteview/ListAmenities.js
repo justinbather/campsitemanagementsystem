@@ -20,7 +20,7 @@ const ListAmenities = (props) => {
       {props.amenities &&
         props.amenities.map((amenity, index) => (
           <div className="w-[6rem] h-6 my-5 px-5 rounded-xl bg-base-100 drop-shadow-lg text-center hover:ring-2 ring-neutral-300">
-            <p key={index} className="text-sm text-dark">
+            <p key={index} className="text-sm text-dark ">
               {amenity.name}
             </p>
           </div>
