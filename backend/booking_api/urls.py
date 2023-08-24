@@ -12,7 +12,7 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('park/', views.ParkView.as_view(), name='park'),
+    #path('park/', views.ParkView.as_view(), name='park'),
     path('park/<int:park_id>', views.ParkView.as_view()),
     #path('site', views.SiteView.as_view()),
     path('site/<int:site_id>', views.SiteView.as_view()),

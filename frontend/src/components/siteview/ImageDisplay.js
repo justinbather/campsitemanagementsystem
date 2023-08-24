@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import placeholderImage from "../../assets/campsite-image.jpg";
 
 const ImageDisplay = (props) => {
   //Limit images to 4 so we can nicely put into grid
-  //let imageArray = []
-  //props.siteImages.length > 4 ? imageArray = props.siteImages.slice(0, 4) : imageArray = props.siteImages
-
+  //let siteImages = []
+  //props.siteImages.length > 4 ? siteImages = props.siteImages.slice(0, 4) : siteImages = props.siteImages
   const [imageArray, setImageArray] = useState([]);
 
   useEffect(() => {
@@ -14,7 +12,6 @@ const ImageDisplay = (props) => {
       : setImageArray(props.siteImages);
   }, [props]);
 
-  console.log(props.siteImages);
   return (
     <div className="pt-4">
       <div className="w-full rounded-xl relative grid grid-cols-2 sm:gap-1 overflow-hidden max-h-[50vh]">
