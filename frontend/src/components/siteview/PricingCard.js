@@ -88,8 +88,12 @@ const PricingCard = (props) => {
           />
         </div>
         <div className="w-full flex flex-row">
+        { numberOfNights > 0 &&
+            <>
           <div className="w-1/2 flex-col text-left justify-start pl-5">
-            <h3 className="text-neutral-500">
+            
+            
+            <h3 className="text-neutral-500 overflow-visible">
               ${props.site.price} x {numberOfNights} nights
             </h3>
             <h3 className="text-neutral-500">Service fee</h3>
@@ -100,7 +104,10 @@ const PricingCard = (props) => {
             <h3 className="text-neutral-500">${netCost} CAD</h3>
             <h3 className="text-neutral-500">${serviceFee} CAD</h3>
             <h3 className="text-neutral-500">${taxes} CAD</h3>
+            
           </div>
+          </>
+        }
         </div>
         <hr className="mx-4 text-neutral-500" />
         <div className="w-full flex flex-row pb-2">
