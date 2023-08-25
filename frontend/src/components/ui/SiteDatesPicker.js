@@ -1,14 +1,40 @@
 import React from "react";
 import { DatePicker } from "@mui/x-date-pickers";
-
-import { useState } from "react";
+import dayjs from "dayjs";
+import { useState, useEffect } from "react";
 import { HiArrowRight } from "react-icons/hi";
+import axios from "axios";
 
 
-
-const DatesPicker = (props) => {
+const SiteDatesPicker = (props) => {
   const [error, setError] = useState(null);
+  const [unavailableDates, setUnavailableDates] = useState([]);
+  const currentDate = dayjs() //returns current date and time in dayjs format
+
+  const parsedCurrentDate = dayjs(currentDate.$d).format("YYYY-MM-DD") // parse to YYYY-MM-DD
+
+  const fetchUnavailableDates = async (parsedCurrentDate) => {
+    axios
+      .get(`/unavailabledates/${props.parkId}/${props.siteId}/${parsedCurrentDate}`)
+      .then((res) => {
+        setUnavailableDates(res.data.dates)
+      })
+      .catch((err) => {
+        console.log(`Error fetching unavailable dates: ${err}`)
+      })
+  }
+ 
+  const disableDates = (date) => {
   
+    const parsedDate = dayjs(date.$d).format("YYYY-MM-DD")
+    return unavailableDates.includes(parsedDate);
+    
+  }
+
+  useEffect(() => {
+    fetchUnavailableDates(parsedCurrentDate);
+  }, [props.parkId, props.siteId])
+
 
 
   return (
@@ -16,7 +42,7 @@ const DatesPicker = (props) => {
       <div className="flex gap-3 items-center">
         <DatePicker
           value={props.arrivalDate}
-          
+          shouldDisableDate={disableDates}
           disablePast
           slotProps={{
             textField: {
@@ -35,6 +61,7 @@ const DatesPicker = (props) => {
         <HiArrowRight />
         <DatePicker
           value={props.departureDate}
+          shouldDisableDate={disableDates}
           disablePast
           slotProps={{
             textField: {
@@ -62,4 +89,4 @@ const DatesPicker = (props) => {
   );
 };
 
-export default DatesPicker;
+export default SiteDatesPicker;
