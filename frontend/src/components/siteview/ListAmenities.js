@@ -14,15 +14,21 @@ const ListAmenities = (props) => {
     }
 
     */
-
+  console.log(props);
   return (
     <>
       {props.amenities &&
         props.amenities.map((amenity, index) => (
-          <div className="w-[6rem] h-6 my-5 px-5 rounded-xl bg-base-100 drop-shadow-lg text-center hover:ring-2 ring-neutral-300">
-            <p key={index} className="text-sm text-dark ">
-              {amenity.name}
-            </p>
+          <div className="flex">
+            <div className="flex items-center pt-4 pb-4 pr-4 ">
+              <img src={amenity.icon} className="w-12 h-12" />
+              <p key={index} className="pl-4 font-semibold">
+                {amenity.name}
+                <p className="font-light text-neutral-500 text-sm">
+                  {amenity.description}
+                </p>
+              </p>
+            </div>
           </div>
         ))}
     </>

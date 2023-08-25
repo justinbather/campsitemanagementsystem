@@ -84,7 +84,9 @@ const SiteView = (props) => {
             <div className="flex mt-10 gap-10">
               <SiteDescription
                 siteAmenities={site.amenities}
-                campgroundDescription="campground description placeholder"
+                siteName={site.id}
+                siteDescription="campground description placeholder"
+                campgroundLogo={campData.logo}
               />
               <PricingCard
                 site={site}

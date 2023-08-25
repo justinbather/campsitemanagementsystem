@@ -42,6 +42,7 @@ class Park(models.Model):
 class Amenities(models.Model):
     name = models.CharField(max_length=15)
     icon = models.ImageField(upload_to="./assets/amenities")
+    description = models.TextField(default="No description available")
 
     def __str__(self):
         return self.name
