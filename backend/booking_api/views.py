@@ -187,13 +187,15 @@ stripe.api_key = settings.STRIPE_TEST
 class StripeCheckoutSession(APIView):
     def post(self, request, *args, **kwargs):
         data_dict = dict(request.data) #Take Site and booking info and create a sitebooking object
-        price = data_dict['price'][0] #Filter through object to send info with pricing etc to stripe
+        rate = data_dict['price'][0] #Filter through object to send info with pricing etc to stripe
         park_id = int(data_dict["park_id"][0])
         site_id = int(data_dict['site_id'][0])
         
         start_date = data_dict['start_date'][0] 
         end_date = data_dict['end_date'][0]
         nights = data_dict['nights'][0]
+        price = int(nights) * int(rate)
+        tax = price * .13
         
         first_name = data_dict['first_name'][0]
         last_name = data_dict['last_name'][0]
@@ -205,22 +207,28 @@ class StripeCheckoutSession(APIView):
 
         booking_obj = SiteBooking.objects.create(park=park_obj, site_id=site_obj, start_date=start_date, end_date=end_date, payment_made=payment_made, first_name=first_name, last_name=last_name, email=email)
         
-    
         
         try:
 
+
             checkout_session = stripe.checkout.Session.create(
                 
-            line_items =[{
+            line_items = [{
                 'price_data' :{
                 'currency' : 'cad',  
                 'product_data': {
                 'name': park_obj.name
                 },
-                'unit_amount': price
+                'unit_amount': price,
+                
                 },
-                'quantity' : nights
-                }],
+                
+                'quantity' : 1
+                },
+                
+                ],
+                
+               
                 mode= 'payment',
                 success_url= FRONTEND_CHECKOUT_SUCCESS_URL,
                 cancel_url= FRONTEND_CHECKOUT_FAILED_URL,

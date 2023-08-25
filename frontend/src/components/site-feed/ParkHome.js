@@ -75,7 +75,10 @@ const ParkHome = () => {
   } else {
     return (
       <div className="">
-        <NavBar />
+        <NavBar
+        showTitle={true}
+        titleText={parkData.name}
+        titleImg={parkData.logo} />
         <div className="flex justify-center pt-10 gap-2">
           <SiteFilter
             arrival={updateArrivalDate}
