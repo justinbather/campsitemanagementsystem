@@ -127,7 +127,7 @@ class SiteView(APIView):
     
 class UnavailableDatesView(APIView):
     """
-    Takes in site_id:int and current_date:str from url params
+    Takes in site_id:int, park_id:int and current_date:str from url params
 
     returns list:str dates of current sitebookings for given site in YYYY-MM-DD
 
@@ -136,13 +136,18 @@ class UnavailableDatesView(APIView):
     append this to a list
     return serialized data
     """
-    def get(self, request, site_id, current_date, *args, **kwargs):
+    def get(self, request, site_id, park_id, current_date, *args, **kwargs):
         
         try:
             site = Site.objects.get(id=site_id)
         except Site.DoesNotExist:
             return Response({'status': 'Tried to access unavailable booking dates from a site that doesnt exist'}, status=status.HTTP_400_BAD_REQUEST)
-        bookings = SiteBooking.objects.filter(site_id=site, start_date__gte=current_date).filter(site_id=site, end_date__gte=current_date).order_by("start_date")
+        try:
+            park = Park.objects.get(id=park_id)
+        except Park.DoesNotExist:
+            return Response({'status': 'Tried to access unavailable booking dates from a park that doesnt exist'}, status=status.HTTP_400_BAD_REQUEST)
+       
+        bookings = SiteBooking.objects.filter(park=park, site_id=site, start_date__gte=current_date).filter(park=park, site_id=site, end_date__gte=current_date).order_by("start_date")
             #Chaining Filter so we provide an OR statement incase there is a booking with a start date from 3 days ago, but end date is in 2 days from current.
         date_list = []
         if bookings:
