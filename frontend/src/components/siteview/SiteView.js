@@ -92,6 +92,8 @@ const SiteView = (props) => {
                 site={site}
                 initialArrival={initialArrival}
                 initialDeparture={initialDeparture}
+                parkId={parkId}
+                siteId={siteId}
               />
             </div>
           </>

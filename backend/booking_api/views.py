@@ -56,7 +56,6 @@ class SiteBookingView(APIView):
 
 
         serializer = SiteSerializer(available_sites, many=True)
-        print(serializer.data)
 
         return Response(serializer.data)
     
@@ -76,11 +75,9 @@ class SiteBookingView(APIView):
         print(request.data)
         
         if serializer.is_valid():
-            print("valid data") 
             try:
                 current_bookings = SiteBooking.objects.get(site_id=serializer.validated_data['site_id'], start_date=serializer.validated_data['start_date'], end_date=serializer.validated_data['end_date'])
             except SiteBooking.MultipleObjectsReturned:
-                print("Site booking already exists")
                 return Response({'status':'That site is booked. Please try different dates'}, status=status.HTTP_400_BAD_REQUEST)
             except SiteBooking.DoesNotExist:
                 booking = SiteBooking.objects.create(park_id=park_id, site_id=serializer.validated_data['site_id'], 
@@ -93,14 +90,12 @@ class SiteBookingView(APIView):
             
                 
             return Response({'status':'That site is booked. Please try different dates'}, status=status.HTTP_400_BAD_REQUEST)
-        print("invalid data")
         return Response({'status':'Incorrect booking info'}, status=status.HTTP_400_BAD_REQUEST)
 
 class SiteImageView(APIView):
     def get(self, request, site_id, *args, **kwargs):
         
         images = SiteImage.objects.filter(site=site_id)
-        print(site_id)
         serializer = SiteImageSerializer(images, many=True)
 
         return Response(serializer.data)
@@ -155,6 +150,7 @@ class UnavailableDatesView(APIView):
                 unavailable_dates = pd.date_range(booking.start_date,booking.end_date-timedelta(days=0),freq='d')
                 date_list.extend(unavailable_dates.strftime('%Y-%m-%d')) # Formats date and appends to end of date_list
         serializer = UnavailableDatesSerializer({'dates': date_list})
+        print (serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
 

@@ -6,7 +6,7 @@ import CheckoutModal from "./CheckoutModal";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { HiArrowRight } from "react-icons/hi";
-import DatesPicker from "../ui/DatesPicker";
+import SiteDatesPicker from "../ui/SiteDatesPicker";
 
 const PricingCard = (props) => {
   const { initialArrival } = useParams();
@@ -80,11 +80,13 @@ const PricingCard = (props) => {
         </div>
 
         <div className="flex flex-row pt-4">
-          <DatesPicker
+          <SiteDatesPicker
             arrivalDate={arrivalDate}
             departureDate={departureDate}
             setArrivalDate={setArrivalDate}
             setDepartureDate={setDepartureDate}
+            parkId={props.parkId}
+            siteId={props.siteId}
           />
         </div>
         <div className="w-full flex flex-row">
