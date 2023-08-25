@@ -88,28 +88,25 @@ const PricingCard = (props) => {
           />
         </div>
         <div className="w-full flex flex-row">
-        { numberOfNights > 0 &&
+          {numberOfNights > 0 && (
             <>
-          <div className="w-1/2 flex-col text-left justify-start pl-5">
-            
-            
-            <h3 className="text-neutral-500 overflow-visible">
-              ${props.site.price} x {numberOfNights} nights
-            </h3>
-            <h3 className="text-neutral-500">Service fee</h3>
-            <h3 className="text-neutral-500">Taxes</h3>
-          </div>
+              <div className="w-1/2 flex-col text-left justify-start pl-5">
+                <h3 className="text-neutral-500 overflow-visible">
+                  ${props.site.price} x {numberOfNights} nights
+                </h3>
+                <h3 className="text-neutral-500">Service fee</h3>
+                <h3 className="text-neutral-500">Taxes</h3>
+              </div>
 
-          <div className="w-1/2 flex-col text-right justify-end pr-5 pb-2">
-            <h3 className="text-neutral-500">${netCost} CAD</h3>
-            <h3 className="text-neutral-500">${serviceFee} CAD</h3>
-            <h3 className="text-neutral-500">${taxes} CAD</h3>
-            
-          </div>
-          </>
-        }
+              <div className="w-1/2 flex-col text-right justify-end pr-5 pb-2">
+                <h3 className="text-neutral-500">${netCost} CAD</h3>
+                <h3 className="text-neutral-500">${serviceFee} CAD</h3>
+                <h3 className="text-neutral-500">${taxes} CAD</h3>
+              </div>
+            </>
+          )}
         </div>
-        <hr className="mx-4 text-neutral-500" />
+        <hr className="mx-4 text-neutral-300" />
         <div className="w-full flex flex-row pb-2">
           <div className="w-1/2 flex-col text-left justify-start pl-5 pt-2">
             <h3 className="text-neutral-500">Total</h3>
