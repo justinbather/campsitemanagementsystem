@@ -27,7 +27,7 @@ const CheckoutModal = (props) => {
             ✕
           </button>
           <h3 className="font-bold text-lg">Hello!</h3>
-          <input type="hidden" name="park_id" value={props.site.park_id} />
+          
 
           <div className="form-control w-full max-w-xs">
             <label className="label">
@@ -62,7 +62,7 @@ const CheckoutModal = (props) => {
               className="input input-bordered w-full max-w-xs"
             />
           </div>
-
+          <input type="hidden" name="park_id" value={props.site.park_id} />
           <input type="hidden" name="site_id" value={props.site.id} />
           <input type="hidden" name="start_date" value={parsedCheckInDate} />
           <input type="hidden" name="end_date" value={parsedCheckoutDate} />

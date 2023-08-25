@@ -9,7 +9,7 @@ from rest_framework import status
 from django.conf import settings
 import stripe
 import pandas as pd
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from .serializers import ParkSerializer, SiteBookingSerializer, SiteSerializer, CreateSiteBookingSerializer, SiteImageSerializer, UnavailableDatesSerializer
 
@@ -187,22 +187,25 @@ stripe.api_key = settings.STRIPE_TEST
 class StripeCheckoutSession(APIView):
     def post(self, request, *args, **kwargs):
         data_dict = dict(request.data) #Take Site and booking info and create a sitebooking object
-        print(data_dict)
         price = data_dict['price'][0] #Filter through object to send info with pricing etc to stripe
         park_id = int(data_dict["park_id"][0])
-        park_obj = Park.objects.get(id=park_id)
         site_id = int(data_dict['site_id'][0])
-        site_obj = Site.objects.get(id=site_id)
+        
         start_date = data_dict['start_date'][0] 
         end_date = data_dict['end_date'][0]
-        first_name = "John"
-        last_name = "Doe"
-        email = "johndoe@hotmail.com"
+        nights = data_dict['nights'][0]
+        
+        first_name = data_dict['first_name'][0]
+        last_name = data_dict['last_name'][0]
+        email = data_dict['email'][0]
         payment_made = False
 
-        
+        park_obj = Park.objects.get(id=park_id)
+        site_obj = Site.objects.get(id=site_id)
+
         booking_obj = SiteBooking.objects.create(park=park_obj, site_id=site_obj, start_date=start_date, end_date=end_date, payment_made=payment_made, first_name=first_name, last_name=last_name, email=email)
         
+    
         
         try:
 
@@ -212,11 +215,11 @@ class StripeCheckoutSession(APIView):
                 'price_data' :{
                 'currency' : 'cad',  
                 'product_data': {
-                'name': site_id,
+                'name': park_obj.name
                 },
                 'unit_amount': price
                 },
-                'quantity' : 1
+                'quantity' : nights
                 }],
                 mode= 'payment',
                 success_url= FRONTEND_CHECKOUT_SUCCESS_URL,
