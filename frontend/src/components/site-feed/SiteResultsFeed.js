@@ -10,11 +10,7 @@ const SiteResultsFeed = (props) => {
   const [selectedDeparture, setSelectedDeparture] = useState([]);
   const { parkId } = useParams();
 
-  useEffect(() => {
-    setSelectedArrival(props.initialArrival);
-
-    setSelectedDeparture(props.initialDeparture);
-  }, [props]);
+  
 
   const navigate = useNavigate();
   const handleClick = (siteId) => {
@@ -23,6 +19,12 @@ const SiteResultsFeed = (props) => {
     );
   };
 
+  useEffect(() => {
+    setSelectedArrival(props.initialArrival);
+
+    setSelectedDeparture(props.initialDeparture);
+  }, [props]);
+  
   return (
     <>
       <div className="flex justify-center px-20 py-14 gap-5">
