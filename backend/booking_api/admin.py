@@ -35,7 +35,7 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(SiteBooking)
 class SiteBookingAdmin(admin.ModelAdmin):
-    list_display = ("park", "site_id", "start_date", "end_date", "total_cost")
+    list_display = ("first_name", "last_name", "park", "site_id", "start_date", "end_date", "total_cost")
 
 
 class SiteImageAdmin(admin.StackedInline):
@@ -50,4 +50,6 @@ class SiteAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Park)
+admin.site.register(Amenities)
+
 

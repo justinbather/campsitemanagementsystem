@@ -10,3 +10,11 @@
   font-family: "Poppins", sans-serif;
   scroll-behavior: smooth;
 }
+
+.hide-scroll-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scroll-bar::-webkit-scrollbar {
+  display: none;
+}

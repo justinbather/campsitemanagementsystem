@@ -8,8 +8,10 @@ from rest_framework.decorators import action
 from rest_framework import status
 from django.conf import settings
 import stripe
+import pandas as pd
+from datetime import timedelta, datetime
 
-from .serializers import ParkSerializer, SiteBookingSerializer, SiteSerializer, CreateSiteBookingSerializer, SiteImageSerializer
+from .serializers import ParkSerializer, SiteBookingSerializer, SiteSerializer, CreateSiteBookingSerializer, SiteImageSerializer, UnavailableDatesSerializer
 
 from .models import *
 
@@ -54,7 +56,6 @@ class SiteBookingView(APIView):
 
 
         serializer = SiteSerializer(available_sites, many=True)
-        print(serializer.data)
 
         return Response(serializer.data)
     
@@ -74,11 +75,9 @@ class SiteBookingView(APIView):
         print(request.data)
         
         if serializer.is_valid():
-            print("valid data") 
             try:
                 current_bookings = SiteBooking.objects.get(site_id=serializer.validated_data['site_id'], start_date=serializer.validated_data['start_date'], end_date=serializer.validated_data['end_date'])
             except SiteBooking.MultipleObjectsReturned:
-                print("Site booking already exists")
                 return Response({'status':'That site is booked. Please try different dates'}, status=status.HTTP_400_BAD_REQUEST)
             except SiteBooking.DoesNotExist:
                 booking = SiteBooking.objects.create(park_id=park_id, site_id=serializer.validated_data['site_id'], 
@@ -91,23 +90,21 @@ class SiteBookingView(APIView):
             
                 
             return Response({'status':'That site is booked. Please try different dates'}, status=status.HTTP_400_BAD_REQUEST)
-        print("invalid data")
         return Response({'status':'Incorrect booking info'}, status=status.HTTP_400_BAD_REQUEST)
 
 class SiteImageView(APIView):
     def get(self, request, site_id, *args, **kwargs):
         
         images = SiteImage.objects.filter(site=site_id)
-        print(site_id)
         serializer = SiteImageSerializer(images, many=True)
 
         return Response(serializer.data)
 
 
 class SiteView(APIView):
-    def get(self, request, *args, **kwargs):
-        sites = Site.objects.all()
-        serializer = SiteSerializer(sites, many=True)
+    def get(self, request, site_id, *args, **kwargs):
+        site = Site.objects.get(id=site_id)
+        serializer = SiteSerializer(site, many=False)
 
         return Response(serializer.data)
     def post(self, request, *args, **kwargs):
@@ -123,11 +120,47 @@ class SiteView(APIView):
         obj.delete()
         return Response({'status':'Site Deleted'})
     
+class UnavailableDatesView(APIView):
+    """
+    Takes in site_id:int, park_id:int and current_date:str from url params
+
+    returns list:str dates of current sitebookings for given site in YYYY-MM-DD
+
+    for each site booking
+    pandas.date_range(sdate,edate-timedelta(days=1),freq='d')
+    append this to a list
+    return serialized data
+    """
+    def get(self, request, site_id, park_id, current_date, *args, **kwargs):
+        
+        try:
+            site = Site.objects.get(id=site_id)
+        except Site.DoesNotExist:
+            return Response({'status': 'Tried to access unavailable booking dates from a site that doesnt exist'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            park = Park.objects.get(id=park_id)
+        except Park.DoesNotExist:
+            return Response({'status': 'Tried to access unavailable booking dates from a park that doesnt exist'}, status=status.HTTP_400_BAD_REQUEST)
+       
+        bookings = SiteBooking.objects.filter(park=park, site_id=site, start_date__gte=current_date).filter(park=park, site_id=site, end_date__gte=current_date).order_by("start_date")
+            #Chaining Filter so we provide an OR statement incase there is a booking with a start date from 3 days ago, but end date is in 2 days from current.
+        date_list = []
+        if bookings:
+            for booking in bookings:
+                unavailable_dates = pd.date_range(booking.start_date,booking.end_date-timedelta(days=0),freq='d')
+                date_list.extend(unavailable_dates.strftime('%Y-%m-%d')) # Formats date and appends to end of date_list
+        serializer = UnavailableDatesSerializer({'dates': date_list})
+        print (serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+
+        
+    
 class ParkView(APIView):
     
-    def get(self, request, *args, **kwargs):
-        parks = Park.objects.all()
-        serializer = ParkSerializer(parks, many=True)
+    def get(self, request, park_id, *args, **kwargs):
+        park = Park.objects.get(id=park_id)
+        serializer = ParkSerializer(park, many=False)
 
         return Response(serializer.data)
     
@@ -154,23 +187,48 @@ stripe.api_key = settings.STRIPE_TEST
 class StripeCheckoutSession(APIView):
     def post(self, request, *args, **kwargs):
         data_dict = dict(request.data) #Take Site and booking info and create a sitebooking object
-        print(data_dict)
-        price = data_dict['price'][0] #Filter through object to send info with pricing etc to stripe
-        product_name = data_dict['product_name'][0]
+        rate = data_dict['price'][0] #Filter through object to send info with pricing etc to stripe
+        park_id = int(data_dict["park_id"][0])
+        site_id = int(data_dict['site_id'][0])
+        
+        start_date = data_dict['start_date'][0] 
+        end_date = data_dict['end_date'][0]
+        nights = data_dict['nights'][0]
+        price = int(nights) * int(rate)
+        tax = price * .13
+        
+        first_name = data_dict['first_name'][0]
+        last_name = data_dict['last_name'][0]
+        email = data_dict['email'][0]
+        payment_made = False
+
+        park_obj = Park.objects.get(id=park_id)
+        site_obj = Site.objects.get(id=site_id)
+
+        booking_obj = SiteBooking.objects.create(park=park_obj, site_id=site_obj, start_date=start_date, end_date=end_date, payment_made=payment_made, first_name=first_name, last_name=last_name, email=email)
+        
+        
         try:
+
 
             checkout_session = stripe.checkout.Session.create(
                 
-            line_items =[{
+            line_items = [{
                 'price_data' :{
-                'currency' : 'usd',  
+                'currency' : 'cad',  
                 'product_data': {
-                'name': product_name,
+                'name': park_obj.name
                 },
-                'unit_amount': price
+                'unit_amount': price,
+                
                 },
+                
                 'quantity' : 1
-                }],
+                },
+                
+                ],
+                
+               
                 mode= 'payment',
                 success_url= FRONTEND_CHECKOUT_SUCCESS_URL,
                 cancel_url= FRONTEND_CHECKOUT_FAILED_URL,

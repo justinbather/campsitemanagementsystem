@@ -1,8 +1,17 @@
-import Homepage from "./Homepage";
-import CampSelect from "./CampSelect";
-import SiteList from "./SiteList";
-import PaymentSuccess from "./PaymentSuccess";
-import PaymentFailure from "./PaymentFailure";
-import Checkout from "./Checkout";
+import CampSelect from "./old-components/CampSelect";
+import SiteList from "./old-components/SiteList";
+import PaymentSuccess from "./Payment/PaymentSuccess";
+import PaymentFailure from "./Payment/PaymentFailure";
+import Checkout from "./Payment/Checkout";
+import SiteView from "./siteview/SiteView";
+import ParkHome from "./site-feed/ParkHome";;
 
-export { Homepage, CampSelect, SiteList, Checkout, PaymentFailure, PaymentSuccess, };
+export {
+  CampSelect,
+  SiteList,
+  Checkout,
+  PaymentFailure,
+  PaymentSuccess,
+  SiteView,
+  ParkHome
+};

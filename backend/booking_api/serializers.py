@@ -9,13 +9,21 @@ class ParkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Park
-        fields = ('id', 'name', 'address', 'postal_code', 'owner')
+        fields = ('__all__')
+
+class AmenitiesSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Amenities
+        fields = ('__all__')
 
 class SiteSerializer(serializers.ModelSerializer):
 
+    amenities = AmenitiesSerializer(many=True, read_only=True)
+
     class Meta:
         model = Site
-        fields = ('__all__')
+        fields = ('id', 'name', 'park_id', 'amenities', 'price', 'thumbnail')
 
 class SiteBookingSerializer(serializers.ModelSerializer):
 
@@ -32,6 +40,10 @@ class SiteImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = SiteImage
         fields = ('__all__')
+
+class UnavailableDatesSerializer(serializers.Serializer):
+    dates = serializers.ListField(child=serializers.DateField(format='%Y-%m-%d')) #Serializer a list of datefields in correct format
+
 
 
 
