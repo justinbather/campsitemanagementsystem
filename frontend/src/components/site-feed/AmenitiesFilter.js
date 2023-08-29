@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 const AmenitiesFilter = (props) => {
@@ -7,9 +7,11 @@ const AmenitiesFilter = (props) => {
 
     const handleAmenityToggle = (e) => {
         if (e.target.checked) {
+            
           setCheckedAmenities([...checkedAmenities, e.target.id]);
           
         } else {
+            
           setCheckedAmenities(
             checkedAmenities.filter((amenity) => amenity !== e.target.id)
           );
@@ -17,6 +19,10 @@ const AmenitiesFilter = (props) => {
         props.amenities(checkedAmenities)
         console.log(checkedAmenities)
       };
+
+      useEffect(() => {
+        props.amenities(checkedAmenities)
+      }, [handleAmenityToggle])
     
     return (
         <>
