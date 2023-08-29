@@ -1,6 +1,6 @@
 import filterIcon from "../../assets/filter-icon.png"
 import closeIcon from "../../assets/close-icon.png"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AmenitiesFilter from "./AmenitiesFilter";
 
 const FilterDropdown = (props) => {
@@ -16,6 +16,10 @@ const FilterDropdown = (props) => {
     const handleDropdownToggle = () => {
         setToggle(!toggle)
     }
+
+    useEffect(() => {
+        updateAmenities()
+    }, [toggle])
 
 return(
     <div className="h-1/2 flex w-full items-center justify-center px-5">

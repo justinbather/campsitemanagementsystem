@@ -62,7 +62,7 @@ const ParkHome = () => {
     */
     const filteredSites = rawAvailableSites.filter((site) => {
       // Check if any amenities are selected
-      if (amenities.length > 0) {
+      if (amenities) {
         // Check if all selected amenities are present in the site's amenities
         return amenities.every((amenity) => {
           return Object.values(site.amenities).some((siteAmenity) => siteAmenity.name === amenity);
@@ -79,7 +79,7 @@ const ParkHome = () => {
 
  
 
-  console.log(updateFilteredSites())
+
   const handleDropdownToggle = () => {
     setDropdownToggle(!dropdownToggle)
   }
@@ -90,9 +90,10 @@ const ParkHome = () => {
   }, [parkId]);
 
   useEffect(() => {
-    updateFilteredSites()
     
-  }, [amenities])
+    updateFilteredSites()
+    console.log(amenities)
+  }, [updateAmenities])
 
   if (updateFilteredSites().length > 0) {
     return (
