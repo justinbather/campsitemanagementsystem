@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import PricingCard from "./PricingCard";
 import SiteViewSkeleton from "./ImageDisplaySkeleton";
+import GoogleMapDisplay from "../ui/GoogleMapDisplay";
 
 const SiteView = (props) => {
   const { parkId } = useParams();
@@ -95,6 +96,10 @@ const SiteView = (props) => {
                 parkId={parkId}
                 siteId={siteId}
               />
+            </div>
+            <div className="flex w-full py-10 h-96">
+              <GoogleMapDisplay parkLatitude={campData.latitude} parkLongitude={campData.longitude} />
+
             </div>
           </>
         )}

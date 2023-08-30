@@ -86,13 +86,13 @@ const ParkHome = () => {
 
   useEffect(() => {
     fetchParkData();
-    console.log(parkData);
+
   }, [parkId]);
 
   useEffect(() => {
     
     updateFilteredSites()
-    console.log(amenities)
+ 
   }, [updateAmenities])
 
   if (updateFilteredSites().length > 0) {
@@ -127,16 +127,34 @@ const ParkHome = () => {
           
         
         <div className="flex pt-5 overflow-x-scroll hide-scroll-bar">
-          <div className="flex flex-nowrap ml-10">
-            <h1 className="absolute left-36 text-center font-inter text-4xl font-bold">
-              Top Sites For You
-            </h1>
+          
             <SiteResultsFeed
+              feedTitle = "Top Sites For You"
               sites={updateFilteredSites()}
               initialArrival={arrivalDate}
               initialDeparture={departureDate}
             />
-          </div>
+          
+        </div>
+        <div className="flex pt-5 overflow-x-scroll hide-scroll-bar">
+          
+            <SiteResultsFeed
+              feedTitle = "Best Tent Sites"
+              sites={updateFilteredSites()}
+              initialArrival={arrivalDate}
+              initialDeparture={departureDate}
+            />
+          
+        </div>
+        <div className="flex pt-5 overflow-x-scroll hide-scroll-bar">
+          
+            <SiteResultsFeed
+              feedTitle = "Popular Trailer Sites"
+              sites={updateFilteredSites()}
+              initialArrival={arrivalDate}
+              initialDeparture={departureDate}
+            />
+          
         </div>
       </div>
     );
