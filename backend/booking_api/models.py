@@ -32,6 +32,8 @@ class Park(models.Model):
     city = models.CharField(max_length=30)
     province = models.CharField(max_length=30)
     postal_code = models.CharField(max_length=6)
+    latitude = models.DecimalField(max_digits=30, decimal_places=13)
+    longitude = models.DecimalField(max_digits=30, decimal_places=13)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     logo = models.ImageField(upload_to="./assets/park/logo", validators=[logo_validator])
 

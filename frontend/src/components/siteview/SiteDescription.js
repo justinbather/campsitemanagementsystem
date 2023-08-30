@@ -1,10 +1,12 @@
 import React from "react";
 import PricingCard from "./PricingCard";
 import ListAmenities from "./ListAmenities";
+import GoogleMapDisplay from "../ui/GoogleMapDisplay";
 
 const SiteDescription = (props) => {
   console.log(props);
   return (
+    <>
     <div className="flex justify-between w-full">
       <div className="flex flex-col h-full w-full mx-8 gap-4 pt-4">
         <div className="flex justify-between items-center">
@@ -19,8 +21,11 @@ const SiteDescription = (props) => {
         <hr className="text-neutral-300"></hr>
         <p>{props.siteDescription}</p>
       </div>
-      <div></div>
+      
+      
     </div>
+    
+    </>
   );
 };
 

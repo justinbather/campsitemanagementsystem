@@ -24,27 +24,31 @@ const SiteResultsFeed = (props) => {
 
     setSelectedDeparture(props.initialDeparture);
   }, [props]);
-  
+
   return (
-    <>
-      <div className="flex justify-center px-20 py-14 gap-5">
-        {props.sites.map((site) => (
-          <div className="flex w-[20rem] h-[20rem] bg-base-100 drop-shadow-xl justify-center overflow-hidden rounded-xl hover:ring-4 ring-neutral-300">
-            <img
-              className="w-full h-full"
-              alt="image"
-              src={site.thumbnail}
-              role="button"
-              key={site.id}
-              onClick={() => handleClick(site.id)}
-            />
-            <h1 className="text-lg text-center text-base-100 absolute bottom-0">
-              Site {site.id} - ${site.price}
-            </h1>
+    
+    <div className="flex flex-nowrap ml-10">
+      <h1 className="absolute left-36 text-center font-inter text-4xl font-bold">
+        {props.feedTitle}
+      </h1>
+        <div className="flex justify-center px-20 py-14 gap-5">
+          {props.sites.map((site) => (
+            <div className="flex w-[20rem] h-[20rem] bg-base-100 drop-shadow-xl justify-center overflow-hidden rounded-xl hover:ring-4 ring-neutral-300">
+              <img
+                className="w-full h-full"
+                alt="image"
+                src={site.thumbnail}
+                role="button"
+                key={site.id}
+                onClick={() => handleClick(site.id)}
+              />
+              <h1 className="text-lg text-center text-base-100 absolute bottom-0">
+                Site {site.id} - ${site.price}
+              </h1>
           </div>
-        ))}
+          ))}
       </div>
-    </>
+    </div>
   );
 };
 
