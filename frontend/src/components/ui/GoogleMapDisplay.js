@@ -14,9 +14,10 @@ const GoogleMapDisplay = (props) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: GOOGLE_MAP_API_KEY,
         });
-        console.log(props.parkLatitude)
 
-        const center = useMemo(() => ({lat: 43.3900395711157, lng:-80.0756503605755}), []);
+        const center = useMemo(() => 
+          ({lat: parseFloat(props.parkLatitude), lng: parseFloat(props.parkLongitude)}),
+          [props.parkLatitude, props.parkLongitude]);
 
 
    
