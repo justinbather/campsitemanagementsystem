@@ -10,6 +10,7 @@ from django.conf import settings
 import stripe
 import pandas as pd
 from datetime import timedelta, datetime
+import os
 
 from .serializers import ParkSerializer, SiteBookingSerializer, SiteSerializer, CreateSiteBookingSerializer, SiteImageSerializer, UnavailableDatesSerializer
 
@@ -183,7 +184,8 @@ class ParkView(APIView):
 
 FRONTEND_CHECKOUT_SUCCESS_URL = settings.CHECKOUT_SUCCESS_URL
 FRONTEND_CHECKOUT_FAILED_URL = settings.CHECKOUT_FAILED_URL
-stripe.api_key = settings.STRIPE_TEST
+stripe.api_key = str(settings.STRIPE_API_TEST_SECRET)
+
 class StripeCheckoutSession(APIView):
     def post(self, request, *args, **kwargs):
         data_dict = dict(request.data) #Take Site and booking info and create a sitebooking object
