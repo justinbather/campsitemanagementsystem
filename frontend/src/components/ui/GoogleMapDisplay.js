@@ -4,7 +4,6 @@ import { GOOGLE_MAP_API_KEY } from "../../constants";
 import "../../index.css";
 
 const GoogleMapDisplay = (props) => {
-  // Need to dynamically render map with park lat and long in props
   /* props: {
     parkLatitude: decimal,
     parkLongitude: decimal
@@ -23,10 +22,12 @@ const GoogleMapDisplay = (props) => {
   );
 
   return (
-    <div className="flex w-8/12 mx-8 pr-14">
+    <div className="flex flex-col w-full mx-8 gap-2">
       {!isLoaded ? (
         <h1>Loading...</h1>
       ) : (
+        <>
+        <h3 className="text-lg font-bold text-left">Where You'll Be Staying</h3>
         <GoogleMap
           mapContainerClassName="map-container"
           center={center}
@@ -34,6 +35,7 @@ const GoogleMapDisplay = (props) => {
         >
           <MarkerF position={center}></MarkerF>
         </GoogleMap>
+        </>
       )}
     </div>
   );
