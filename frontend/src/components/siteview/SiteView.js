@@ -8,6 +8,7 @@ import axios from "axios";
 import PricingCard from "./PricingCard";
 import SiteViewSkeleton from "./ImageDisplaySkeleton";
 import GoogleMapDisplay from "../ui/GoogleMapDisplay";
+import SiteInfo from "./SiteInfo";
 
 const SiteView = (props) => {
   const { parkId } = useParams();
@@ -83,10 +84,10 @@ const SiteView = (props) => {
               thumbnail={site.thumbnail}
             />
             <div className="flex mt-10 gap-10">
-              <SiteDescription
+              <SiteInfo
                 siteAmenities={site.amenities}
                 siteName={site.id}
-                siteDescription={campData.description}
+
                 campgroundLogo={campData.logo}
               />
               <PricingCard
@@ -95,6 +96,13 @@ const SiteView = (props) => {
                 initialDeparture={initialDeparture}
                 parkId={parkId}
                 siteId={siteId}
+              />
+            </div>
+            <div className="flex w-full h-full my-10">
+            <SiteDescription
+
+                siteDescription={campData.description}
+     
               />
             </div>
             <div className="flex w-full py-10 h-96">

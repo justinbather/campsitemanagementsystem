@@ -13,7 +13,6 @@ const PricingCard = (props) => {
   const [arrivalDate, setArrivalDate] = useState(dayjs(initialArrival));
   const [numberOfNights, setNumberOfNights] = useState("Select dates");
   const [netCost, setNetCost] = useState("");
-  const [serviceFee, setServiceFee] = useState("");
   const [taxes, setTaxes] = useState("");
   const [total, setTotal] = useState("");
 
@@ -31,32 +30,26 @@ const PricingCard = (props) => {
     return netCost;
   };
 
-  const calcServiceFee = (netCost) => {
-    const serviceRate = 0.2;
-    const serviceFee = Math.ceil(netCost * serviceRate);
-    return serviceFee;
-  };
+  
 
-  const calcTaxes = (netCost, serviceFee) => {
-    const taxes = Math.ceil((netCost + serviceFee) * 0.13);
+  const calcTaxes = (netCost) => {
+    const taxes = Math.ceil((netCost) * 0.13);
     return taxes;
   };
 
   const calcTotal = (netCost, taxes) => {
-    const total = Math.ceil(netCost + taxes + serviceFee);
+    const total = Math.ceil(netCost + taxes);
     return total;
   };
 
   useEffect(() => {
     const nights = calcNights(arrivalDate, departureDate);
     const netCost = calcNetCost(nights, props.site.price);
-    const serviceFee = calcServiceFee(netCost);
-    const taxes = calcTaxes(netCost, serviceFee);
+    const taxes = calcTaxes(netCost);
     const total = calcTotal(netCost, taxes);
 
     setNumberOfNights(nights);
     setNetCost(netCost);
-    setServiceFee(serviceFee);
     setTaxes(taxes);
     setTotal(total);
   }, [arrivalDate, departureDate, props.site.price]); //adding these dependencies fixed the refresh delay but onload shows 0 or NaN
@@ -94,13 +87,13 @@ const PricingCard = (props) => {
                 <h3 className="text-neutral-500 overflow-visible">
                   ${props.site.price} x {numberOfNights} nights
                 </h3>
-                <h3 className="text-neutral-500">Service fee</h3>
+
                 <h3 className="text-neutral-500">Taxes</h3>
               </div>
 
               <div className="w-1/2 flex-col text-right justify-end pr-5 pb-2">
                 <h3 className="text-neutral-500">${netCost} CAD</h3>
-                <h3 className="text-neutral-500">${serviceFee} CAD</h3>
+
                 <h3 className="text-neutral-500">${taxes} CAD</h3>
               </div>
             </>
