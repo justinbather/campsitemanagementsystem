@@ -99,7 +99,7 @@ const ParkHome = () => {
           departure={updateDepartureDate}
           sites={updateRawAvailableSites}
         />
-        <div className="w-8 h-8 flex flex-row mt-3 items-center justify-center align-center">
+        <div className="w-8 h-8 flex flex-row mt-3 items-center justify-center align-center hover:bg-neutral-200 rounded-full transition">
           <a onClick={handleDropdownToggle}>
             <img
               className="w-6 cursor-pointer"
