@@ -4,19 +4,14 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { useState } from "react";
 import { HiArrowRight } from "react-icons/hi";
 
-
-
 const DatesPicker = (props) => {
   const [error, setError] = useState(null);
-  
-
 
   return (
     <div>
       <div className="flex gap-3 items-center">
         <DatePicker
           value={props.arrivalDate}
-          
           disablePast
           slotProps={{
             textField: {
@@ -51,7 +46,7 @@ const DatesPicker = (props) => {
           }}
         />
       </div>
-      <div className="h-[24px] text-center">
+      <div className="text-center">
         {error && (
           <p className="pt-2 text-xs" style={{ color: "red" }}>
             {error}

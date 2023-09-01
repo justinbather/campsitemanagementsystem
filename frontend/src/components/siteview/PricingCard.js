@@ -1,11 +1,9 @@
 import dayjs from "dayjs";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import GradientButton from "../ui/GradientButton";
 import CheckoutModal from "./CheckoutModal";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { HiArrowRight } from "react-icons/hi";
 import SiteDatesPicker from "../ui/SiteDatesPicker";
 
 const PricingCard = (props) => {

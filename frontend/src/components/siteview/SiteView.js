@@ -86,7 +86,7 @@ const SiteView = (props) => {
               <SiteDescription
                 siteAmenities={site.amenities}
                 siteName={site.id}
-                siteDescription="campground description placeholder"
+                siteDescription={campData.description}
                 campgroundLogo={campData.logo}
               />
               <PricingCard
@@ -98,8 +98,10 @@ const SiteView = (props) => {
               />
             </div>
             <div className="flex w-full py-10 h-96">
-              <GoogleMapDisplay parkLatitude={campData.latitude} parkLongitude={campData.longitude} />
-
+              <GoogleMapDisplay
+                parkLatitude={campData.latitude}
+                parkLongitude={campData.longitude}
+              />
             </div>
           </>
         )}

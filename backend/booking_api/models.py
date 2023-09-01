@@ -36,6 +36,7 @@ class Park(models.Model):
     longitude = models.DecimalField(max_digits=30, decimal_places=13)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     logo = models.ImageField(upload_to="./assets/park/logo", validators=[logo_validator])
+    description = models.TextField(default="No description available")
 
     def __str__(self):
         return self.name
