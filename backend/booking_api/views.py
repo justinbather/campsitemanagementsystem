@@ -12,7 +12,7 @@ import pandas as pd
 from datetime import timedelta, datetime
 import os
 
-from .serializers import ParkSerializer, SiteBookingSerializer, SiteSerializer, CreateSiteBookingSerializer, SiteImageSerializer, UnavailableDatesSerializer
+from .serializers import * 
 
 from .models import *
 
@@ -73,7 +73,6 @@ class SiteBookingView(APIView):
         - Response: A JSON response containing either the serialized booking data if successful, or an error message if the campsite is already booked for the given date range.
         """
         serializer = CreateSiteBookingSerializer(data=request.data)
-        print(request.data)
         
         if serializer.is_valid():
             try:
@@ -92,6 +91,37 @@ class SiteBookingView(APIView):
                 
             return Response({'status':'That site is booked. Please try different dates'}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'status':'Incorrect booking info'}, status=status.HTTP_400_BAD_REQUEST)
+    
+class BookingObjectView(APIView):
+
+    # Return Booking object given Booking Object ID
+
+    def get(self, request, booking_id, *args, **kwargs):
+
+        try:
+            booking_obj = SiteBooking.objects.get(id=booking_id)
+            serializer = BookingObjectSerializer(booking_obj)
+            print(serializer.data)
+            return Response(serializer.data) #Returns all fields of Booking Object
+        
+        except SiteBooking.DoesNotExist:
+            return Response({'status': 'There was an error fetching this Booking Information. Does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+    # Update Booking Obj setting Payment made to True
+    def put(self, request, booking_id, *args, **kwargs):
+
+        
+        try:
+            booking_obj = SiteBooking.objects.get(id=booking_id)
+            booking_obj.payment_made = True
+            booking_obj.save()
+
+            return Response(status=status.HTTP_200_OK)
+
+        except SiteBooking.DoesNotExist:
+            return Response({'status':'There was an error finding your Booking.'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        
 
 class SiteImageView(APIView):
     def get(self, request, site_id, *args, **kwargs):
@@ -230,9 +260,9 @@ class StripeCheckoutSession(APIView):
                 
                 ],
                 
-               
+               automatic_tax={"enabled": True},
                 mode= 'payment',
-                success_url= FRONTEND_CHECKOUT_SUCCESS_URL,
+                success_url= "http://localhost:3000/bookings/success/" + str(booking_obj.id),
                 cancel_url= FRONTEND_CHECKOUT_FAILED_URL,
                 )
             print('session created')
@@ -241,6 +271,10 @@ class StripeCheckoutSession(APIView):
             print(e)
 
             return e
+        
+def CheckoutSuccess(request, booking_id):
+    print(booking_id)
+    return()
     
 class WebhookTest(APIView):
     

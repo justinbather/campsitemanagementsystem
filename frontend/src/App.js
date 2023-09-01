@@ -35,6 +35,11 @@ function App() {
               index
               element={<ParkHome />}
             ></Route>
+            <Route
+              exact
+              path="bookings/success/:booking_id"
+              element={<PaymentSuccess />}
+            />
             {/* <Route exact path='bookings' index element={<CampSelect />} /> */}
             {/* <Route
               exact

@@ -31,6 +31,12 @@ class SiteBookingSerializer(serializers.ModelSerializer):
         model = SiteBooking
         fields = ('id', 'park', 'site_id', 'start_date', 'end_date', 'payment_made')
 
+class BookingObjectSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SiteBooking
+        fields = ('__all__')
+
 class CreateSiteBookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = SiteBooking

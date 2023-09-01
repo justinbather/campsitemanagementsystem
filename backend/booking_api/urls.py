@@ -20,6 +20,8 @@ urlpatterns = [
     path('unavailabledates/<int:park_id>/<int:site_id>/<str:current_date>', views.UnavailableDatesView.as_view()),
     path('siteimage/<int:site_id>', views.SiteImageView.as_view()),
     path('bookings/payment', views.StripeCheckoutSession.as_view()),
+    path('bookings/payment/success/<int:booking_id>', views.CheckoutSuccess),
+    path('bookings/payment/info/<int:booking_id>', views.BookingObjectView.as_view()),
     path('webhook-test/', views.WebhookTest.as_view()),
 
     #path('bookings/<int:park_id>/<int:site_id>', views.SiteBookingView.as_view()),
