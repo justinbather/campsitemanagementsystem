@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -145,10 +148,8 @@ AUTH_USER_MODEL = 'booking_api.User'
 
 REST_FRAMEWORK = {'DEFAULT_PERMISSION_CLASSES':['rest_framework.permissions.AllowAny']}
 
-STRIPE_SECRET_KEY = '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'
-STRIPE_PUBLISHABLE_KEY = 'pk_live_51NfXjLCMF3L6PIrMmuHP3vCFFblraELWr9bF4A7p4hRpGglUx88Zq0POWDwDqsHymc0msbkoeKwZmjVxoxIukxV700vCFty0aT'
-STRIPE_TEST = 'sk_test_51NfXjLCMF3L6PIrMsE2SQeA9tlwEgZ8M3hqM8v5yJ7UGDNGXQx4HjEP1VlRzelWAk4Y1lkgMg5lUzu4rHjo4pMJw00GQWyd8lj'
+STRIPE_API_TEST_SECRET = os.environ.get('STRIPE_API_TEST_SECRET')
 CHECKOUT_SUCCESS_URL = 'http://localhost:3000/bookings/success/'
 CHECKOUT_FAILED_URL = 'http://localhost:3000/bookings/failed/'
 
-WEBHOOK_SECRET = 'whsec_195a2fa82df9da6542c4ec43db2301335194588a0863237d12fdd315e22829c7'
+WEBHOOK_SECRET = os.environ.get('WEBHOOK_SECRET')
